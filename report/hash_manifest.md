@@ -1,11 +1,12 @@
 # Appendix B — Hash manifest
 
-Generated with `sha256sum` on 2026-11-18T21:08:32Z. Sealed pcaps and their `.sha256` files are read-only; analysis outputs are writable.
+Generated with `sha256sum` on 2026-11-18T21:17:12Z. Sealed pcaps and their `.sha256` files are read-only; analysis outputs are writable.
 
 **Scope:** every file in the submission tree is listed except this manifest itself (a file cannot hash itself), Python bytecode caches (`__pycache__/`, `*.pyc`) and Git internals under `.git/`. Root Markdown files, `.gitignore`, case artifacts, supplementary material, custody records, reports, PDFs and scripts are all included. Private exercise material (`project.md`, `lab/`, `ground_truth/`) is excluded from this public tree.
 
 ```
 7c0c355211b096d43b9b66397f9647543f588d6f4c3879deed6227a0b26cd074  .gitignore
+817f92ad9d6205a8c38ae14ad98af08773eb458efbe97ec967db4326c3597449  LICENSE
 db763ba50f47da9cc91d2a7b3df2398d2adb61279003d365d267ab699743b7d0  README.md
 faa81827eebaedd8ce87d065ce19449f1369e030462fd6420dd4938cc055828b  cases/case01_ssh_sessions/excerpts/SHA256SUMS.txt
 749b034e7e96c1923ef0cb12098bb8df9f8b9b635a0dd89b27e48d7886c46fbb  cases/case01_ssh_sessions/excerpts/case01_ssh_22.pcap
