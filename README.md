@@ -54,6 +54,7 @@ Expected: 4 × `OK`; `dnscat.<hex...>` query names; `username/password/Login` an
 │       ├── timeline/            # evidence-referenced timeline.csv
 │       ├── viz/                 # 220-dpi PNG
 │       ├── flows/               # Zeek-derived flow export + README
+│       ├── netflow/             # independent nfdump/nfpcapd exporter records
 │       ├── excerpts/            # filtered pcap excerpts + SHA256SUMS.txt
 │       └── report/              # per-case report, notes, verification
 ├── supplementary/               # superseded SYNTHETIC case01/case03 (labelled)

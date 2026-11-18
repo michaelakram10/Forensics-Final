@@ -43,8 +43,9 @@ submission; see `report/data_provenance.md` and Appendix F.
 
 **Key limitations:** real captures are on loopback (no distinct attacker/victim IPs);
 SSH, dnscat2 and TLS payloads are encrypted; no host evidence; synthetic TLS omits a
-Certificate message; `nfpcapd`/`nfdump` and `pandoc` are unavailable (flow CSVs derive
-from Zeek `conn.log`; PDFs use WeasyPrint).
+Certificate message; `pandoc` is unavailable (PDFs use WeasyPrint). Flow CSVs derive
+from Zeek `conn.log`; independent `nfdump` exporter records are under
+`cases/*/netflow/` and reconcile exactly on packets and bytes.
 
 ---
 
@@ -516,7 +517,7 @@ excerpts, flow CSVs and the appendix, are listed. Scope is stated in the manifes
 
 ## Appendix C — Chain of Custody
 
-`custody/custody_log.csv` (16 entries; `notes` column marks superseded
+`custody/custody_log.csv` (17 entries; `notes` column marks superseded
 synthetic captures and records public-safe acquisition details):
 
 ```csv
@@ -537,6 +538,7 @@ utc_time,user,host,case,action,pcap_sha256,notes
 2026-11-18T19:56:23Z,kali,kali,case03,"re-audit: acquisition notes added and polling-rate phases documented",n/a,"documentation-only custody entry; no pcap changed"
 2026-11-18T20:30:48Z,kali,kali,all,"documentation update per repo_gap_analysis.md",n/a,"embedded rated findings; reworded case01 burst references; expanded case02/04 reports; no pcap changed"
 2026-11-18T21:07:51Z,kali,kali,all,"second-review documentation update (A1-A4, A6): corrected verify_counts.py path; added blind-check, two-host and new-case templates; recorded failed independent-flow install; added Case 01 operator context; custody attribution note",n/a,"documentation-only custody entry; manual-guided not blind; no pcap or raw evidence changed"
+2026-11-18T21:21:41Z,kali,kali,all,"independent nfdump/nfpcapd flow export from sealed pcaps",n/a,"new cases/*/netflow/ exporter records and report/netflow_reconciliation.md; sealed pcaps read-only; manual-guided not blind"
 ```
 
 The original synthetic Case 01/03 entries are explicitly marked superseded by the
@@ -559,6 +561,9 @@ scripts are excluded from this public submission (see Appendix F).
   `case04.mmd`.
 - Flow exports: `cases/*/flows/caseNN_flows.csv` + `report/flows_reconciliation.md`
   (Zeek `conn.log`-derived, not NetFlow exporter records).
+- Independent NetFlow exporter records: `cases/*/netflow/nfcapd.*` plus text exports
+  and summaries under `cases/*/netflow/export/`, produced with `nfpcapd`/`nfdump`
+  1.7.10-release and reconciled in `report/netflow_reconciliation.md`.
 - Focused pcap excerpts: `cases/*/excerpts/*.pcap` + `SHA256SUMS.txt`, indexed in
   `report/excerpts_index.md`.
 - Slide deck: `report/PRESENTATION.md` / `.pdf`.

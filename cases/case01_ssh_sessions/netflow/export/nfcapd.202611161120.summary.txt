@@ -1,0 +1,4 @@
+Summary: total flows: 9, total bytes: 15916, total packets: 107, avg bps: 3703, avg pps: 3, avg bpp: 148
+Time window: 2026-11-16 16:20:54.608 - 2026-11-16 16:21:28.993, Duration:    00:00:34.385
+Total records processed: 9, passed: 9, Blocks skipped: 0, Bytes read: 684
+Sys: 0.0022s User: 0.0022s Wall: 0.0034s flows/second: 2610.2 Runtime: 0.0035s

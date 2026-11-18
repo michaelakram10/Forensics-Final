@@ -85,15 +85,28 @@ python3 ./tools/beacon_stats.py "$CASE"
 zeek-cut query < cases/$CASE/zeek/tsv/dns.log | python3 ./tools/dns_stats.py
 ```
 
-## 6. Flows (Zeek-derived, not NetFlow)
+## 6. Flows (Zeek-derived view + independent NetFlow records)
 
 ```bash
 python3 ./tools/export_flows.py "$CASE"    # after adding the case to CASES/BASE
 ```
 
 Writes `cases/$CASE/flows/case05_flows.csv` and refreshes
-`report/flows_reconciliation.md`. Keep the "Zeek-derived, not NetFlow" wording
-unless an independent flow tool is actually used and documented.
+`report/flows_reconciliation.md`. Keep the "Zeek-derived, not NetFlow" wording for
+those CSVs. Independent exporter output can now be added in a NEW folder:
+
+```bash
+mkdir -p "cases/$CASE/netflow/export"
+nfpcapd -r "cases/$CASE/raw/$BASE.pcap" -w "cases/$CASE/netflow" -I "$BASE"
+for f in cases/$CASE/netflow/nfcapd.*; do
+  n=$(basename "$f")
+  nfdump -r "$f" -o csv -N > "cases/$CASE/netflow/export/$n.csv"
+  nfdump -r "$f" -o null -N > "cases/$CASE/netflow/export/$n.summary.txt" 2>&1
+done
+```
+
+Sum the per-file CSV totals and add the case to `report/netflow_reconciliation.md`;
+the installed tools are `nfpcapd`/`nfdump` 1.7.10-release.
 
 ## 7. Focused excerpts
 

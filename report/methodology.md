@@ -38,15 +38,17 @@ Recorded automatically in `report/tool_versions.md`:
 | tshark / capinfos | 4.6.9 |
 | tcpdump | 4.99.6 |
 | jq | 1.8.2 |
+| nfdump / nfpcapd | 1.7.10-release (apt package `nfdump` 1.7.10-1) |
 | Python | 3.14.7 |
 | scapy / pandas / matplotlib / numpy | 2.8.0 / 2.3.3 / 3.10.9+dfsg1 / 2.4.6 |
 | Time zone for all analysis | UTC (`export TZ=UTC`) |
 
-An independent NetFlow export was attempted but could not be produced: `nfpcapd`,
-`nfdump`, `softflowd` and `argus` are not installed, and installation is not possible
-in this environment (no passwordless sudo). `pandoc` is also unavailable. Flow exports
-are therefore derived from Zeek `conn.log` (Section 4.5) and PDFs are generated with
-WeasyPrint (Section 4.7).
+An independent NetFlow export was initially unavailable, but `nfdump` 1.7.10-1 was
+later installed and `nfpcapd`/`nfdump` 1.7.10-release produced exporter records from
+all four sealed pcaps into new `cases/<case>/netflow/` folders; see
+`report/netflow_reconciliation.md`. The Zeek-derived flow CSVs remain in
+`cases/*/flows/` (Section 4.4). `pandoc` is also unavailable, so PDFs are generated
+with WeasyPrint (Section 4.6).
 
 ## 3. Evidence handling
 
@@ -131,8 +133,10 @@ python3 ./tools/export_flows.py
 
 Produces `cases/*/flows/caseNN_flows.csv` (one row per Zeek connection, NetFlow-like
 columns) plus `report/flows_reconciliation.md`. These are **exports of Zeek conn.log,
-not NetFlow exporter records** — `nfpcapd`/`nfdump` are unavailable. Reconciliation
-compares flow-CSV row counts with tshark TCP/UDP stream counts.
+not NetFlow exporter records**. Independent NetFlow records were produced with
+`nfpcapd` 1.7.10-release from the sealed pcaps into `cases/<case>/netflow/`; their
+`nfdump` exports and reconciliation are in `report/netflow_reconciliation.md`.
+The Zeek flow-CSV row counts are compared with tshark TCP/UDP stream counts.
 
 ### 4.5 Focused pcap excerpts
 

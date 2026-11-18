@@ -115,7 +115,7 @@ All four reconciliations: **CONFIRMED** for flows, packets and IP bytes.
 - No host evidence: cookie validity, file-write success, tasking/exfiltration intent are inferences.
 - Synthetic TLS omits a Certificate message (Zeek 9.0.1 still reports `established=T`).
 - No ground-truth console log was kept; Case 03 burst/session interpretations rely on traffic patterns only.
-- `nfpcapd`/`nfdump` install was attempted but no passwordless sudo is available; flow CSVs remain Zeek exports. `pandoc` is unavailable, so PDFs use WeasyPrint.
+- Flow CSVs remain Zeek exports; independent `nfdump` 1.7.10 records are in `cases/*/netflow/` and reconcile on packets/bytes. `pandoc` is unavailable, so PDFs use WeasyPrint.
 
 ---
 
