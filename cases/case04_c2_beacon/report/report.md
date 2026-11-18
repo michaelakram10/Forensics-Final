@@ -81,7 +81,7 @@ Likely 3 (F4.2b, F4.5, F4.8); Inferred 2 (F4.6, F4.7b).
 
 ## Cross-tool verification (from verification.md)
 
-`report/verify_counts.py` reconciles Zeek and tshark with zero deltas:
+`tools/verify_counts.py` reconciles Zeek and tshark (output: `report/verify_counts.md`) with zero deltas:
 
 | Metric | Zeek | tshark | Delta | Status |
 |---|---:|---:|---:|---|

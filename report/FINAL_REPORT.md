@@ -113,6 +113,12 @@ Zeek records 0 / 5 / 5 authentication attempts and `auth_success` unset / `F` / 
 payload after key exchange is encrypted, so no credentials, commands or host effects
 are observable.
 
+**Operator-reported context (not derived from the pcap):** the retained setup
+notes (`cases/case01_ssh_sessions/report/pcap_notes.md`) state that the sessions
+were generated with Hydra v9.7 against `127.0.0.1:22` with a short wordlist. The
+sealed pcap alone does not prove tool identity, and this context does **not**
+change any finding or rating.
+
 ### 3.2 Evidence inventory
 
 | Evidence | Key facts |
@@ -510,7 +516,7 @@ excerpts, flow CSVs and the appendix, are listed. Scope is stated in the manifes
 
 ## Appendix C — Chain of Custody
 
-`custody/custody_log.csv` (15 entries; `notes` column marks superseded
+`custody/custody_log.csv` (16 entries; `notes` column marks superseded
 synthetic captures and records public-safe acquisition details):
 
 ```csv
@@ -530,6 +536,7 @@ utc_time,user,host,case,action,pcap_sha256,notes
 2026-11-18T19:56:23Z,kali,kali,case01,"re-audit: acquisition notes added, case01 folder renamed to case01_ssh_sessions",n/a,"documentation-only custody entry; no pcap changed"
 2026-11-18T19:56:23Z,kali,kali,case03,"re-audit: acquisition notes added and polling-rate phases documented",n/a,"documentation-only custody entry; no pcap changed"
 2026-11-18T20:30:48Z,kali,kali,all,"documentation update per repo_gap_analysis.md",n/a,"embedded rated findings; reworded case01 burst references; expanded case02/04 reports; no pcap changed"
+2026-11-18T21:07:51Z,kali,kali,all,"second-review documentation update (A1-A4, A6): corrected verify_counts.py path; added blind-check, two-host and new-case templates; recorded failed independent-flow install; added Case 01 operator context; custody attribution note",n/a,"documentation-only custody entry; manual-guided not blind; no pcap or raw evidence changed"
 ```
 
 The original synthetic Case 01/03 entries are explicitly marked superseded by the

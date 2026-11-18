@@ -8,6 +8,12 @@
 
 This is a **real 107-packet tcpdump capture** from an isolated lab. All traffic is on **loopback** (`127.0.0.1 → 127.0.0.1`). It contains exactly **three completed SSH TCP sessions** to `127.0.0.1:22`: one short (0.120797 s) and two long (19.858788 s and 14.196392 s). The capture spans **34.385135 s**, from `1794846054.608130` (2026-11-16 16:20:54.608130Z) to `1794846088.993265` (16:21:28.993265Z). All three sessions present the same plaintext banners — client `SSH-2.0-libssh_0.12.2`, server `SSH-2.0-OpenSSH_10.6p1 Debian-1` — and the same negotiated algorithms and host-key fingerprint. Zeek's SSH analyzer records 0 authentication attempts in the short session and 5 in each long session, with `auth_success` `F` for the first long session and `T` for the second. **There is no port scan and no burst of many short sessions in this capture**; the earlier synthetic version of Case 01 is preserved under `supplementary/synthetic_case01/` and does not apply here. SSH payload after key exchange is encrypted, so credentials, user identity, commands and host effects are not recoverable.
 
+**Operator-reported context (not derived from the pcap):** the retained setup
+notes in `pcap_notes.md` state that the sessions were generated with Hydra v9.7
+against `127.0.0.1:22` with a short wordlist. The sealed pcap alone does not
+prove tool identity, and this context does **not** change any finding or rating
+in this report.
+
 ## Evidence inventory
 
 | Evidence | Location | Key facts |
