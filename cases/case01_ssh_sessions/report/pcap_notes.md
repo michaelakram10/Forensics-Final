@@ -2,9 +2,8 @@
 
 All times are **UTC** (`export TZ=UTC`). The pcap is a real tcpdump capture from
 an isolated lab on **loopback**: every frame is `127.0.0.1 → 127.0.0.1`. There is
-no port scan and no 36-attempt brute-force burst in this file; those claims
-belong to the preserved synthetic case under `supplementary/synthetic_case01/`
-and are **not** evidence here.
+no port scan and no burst of many short sessions in this file; no such activity
+is present in these 107 frames.
 
 ## Acquisition note (operator-reported; public-safe)
 
@@ -22,8 +21,8 @@ and are **not** evidence here.
 - **What generated the sessions:** a local OpenSSH server on `127.0.0.1:22` and
   Hydra v9.7 against the same loopback address (`ssh://127.0.0.1`, `-t 1 -I`)
   with a short wordlist. Account names and wordlist contents are omitted. The
-  sealed pcap itself shows only three completed sessions; the original synthetic
-  exercise's 36-attempt count is **not** evidence in this capture.
+  sealed pcap itself shows only three completed sessions; a burst of many short
+  sessions is **not** evidence in this capture.
 - **Clock:** the VM clock was UTC−5. The local display 11:20:54–11:21:28 becomes
   16:20:54–16:21:28 UTC by adding 5 h; packet epochs and all reported times are
   UTC.

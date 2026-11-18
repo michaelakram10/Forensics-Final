@@ -1,0 +1,10 @@
+# Python packages imported by tools/*.py.
+# Versions below are recorded in report/tool_versions.md.
+pandas==2.3.3
+matplotlib==3.10.9+dfsg1
+numpy==2.4.6
+
+# Imported by tools/export_pdf.py; report/tool_versions.md does not record their
+# versions, so they are deliberately left unpinned rather than guessed.
+markdown
+weasyprint

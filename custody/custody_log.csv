@@ -13,3 +13,4 @@ utc_time,user,host,case,action,pcap_sha256,notes
 2026-11-18T19:29:12Z,kali,kali,case03,"replaced synthetic with real loopback dnscat2 capture",e06cac58e6204357992523b8b75f8c22503c7a82e313f00697c2bf74f7ed44eb,"sealed evidence is the real 890-packet capture; acquisition note records operator-reported setup"
 2026-11-18T19:56:23Z,kali,kali,case01,"re-audit: acquisition notes added, case01 folder renamed to case01_ssh_sessions",n/a,"documentation-only custody entry; no pcap changed"
 2026-11-18T19:56:23Z,kali,kali,case03,"re-audit: acquisition notes added and polling-rate phases documented",n/a,"documentation-only custody entry; no pcap changed"
+2026-11-18T20:30:48Z,kali,kali,all,"documentation update per repo_gap_analysis.md",n/a,"embedded rated findings; reworded case01 burst references; expanded case02/04 reports; no pcap changed"

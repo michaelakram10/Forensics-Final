@@ -13,6 +13,18 @@ exports, pcap excerpts and the final forensic report. The exercise manual
 > repository. The analysis was manual-guided, not blind; no "frozen before unsealing"
 > claim is made.
 
+## Prerequisites
+
+- Zeek 9.0.1 (`/opt/zeek/bin/zeek` and `zeek-cut`).
+- tshark and capinfos 4.6.x (4.6.9 in `report/tool_versions.md`).
+- tcpdump 4.99.6.
+- jq 1.8.2.
+- Python 3.14.7 with the packages in `requirements.txt`:
+  `python3 -m pip install -r requirements.txt`.
+- WeasyPrint and the Python `markdown` package are required for PDF export; both
+  are listed in `requirements.txt`. Their versions are not recorded in
+  `report/tool_versions.md`, so they are left unpinned.
+
 ## How to verify my work (60 seconds)
 
 ```bash

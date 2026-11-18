@@ -50,7 +50,7 @@ All four reconciliations: **CONFIRMED** for flows, packets and IP bytes.
 - 107 packets, 3 TCP conversations to `127.0.0.1:22`; 34.385 s total span, longest session 19.859 s.
 - Client banners: `SSH-2.0-libssh_0.12.2`; server: `SSH-2.0-OpenSSH_10.6p1 Debian-1`.
 - Two long sessions plus one short connection; sizes and timing are visible, payload is encrypted.
-- Honest finding: **no port scan and no brute-force burst** are present in this real capture — those belonged to the synthetic version, preserved under `supplementary/`.
+- Honest finding: **no port scan and no burst of many short sessions** are present in this real capture.
 
 ---
 
