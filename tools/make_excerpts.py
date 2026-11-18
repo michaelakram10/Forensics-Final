@@ -8,10 +8,10 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE = {"case01_ssh_bruteforce": "case01", "case02_web_sqli": "case02",
+BASE = {"case01_ssh_sessions": "case01", "case02_web_sqli": "case02",
         "case03_dns_tunnel": "case03", "case04_c2_beacon": "case04"}
 EXCERPTS = {
-    "case01_ssh_bruteforce": [
+    "case01_ssh_sessions": [
         ("case01_ssh_22.pcap", "tcp.port == 22", "all SSH traffic on port 22"),
     ],
     "case02_web_sqli": [

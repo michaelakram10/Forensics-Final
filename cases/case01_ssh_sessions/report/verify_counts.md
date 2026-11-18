@@ -1,4 +1,4 @@
-### Reconciliation for case01_ssh_bruteforce
+### Reconciliation for case01_ssh_sessions
 
 | Metric | Zeek | tshark | Delta | Status |
 |---|---:|---:|---:|---|

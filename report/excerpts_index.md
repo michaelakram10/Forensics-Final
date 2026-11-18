@@ -4,7 +4,7 @@ Created from the sealed originals with `tshark -r <pcap> -Y <filter> -w <out>`. 
 
 | Case | Excerpt | Filter | What it shows |
 |---|---|---|---|
-| case01_ssh_bruteforce | `case01_ssh_22.pcap` | `tcp.port == 22` | all SSH traffic on port 22 |
+| case01_ssh_sessions | `case01_ssh_22.pcap` | `tcp.port == 22` | all SSH traffic on port 22 |
 | case02_web_sqli | `case02_http.pcap` | `http` | all HTTP request/response traffic |
 | case02_web_sqli | `case02_outfile.pcap` | `http.request.uri contains "OUTFILE"` | INTO OUTFILE staging request |
 | case02_web_sqli | `case02_csv_download.pcap` | `http.request.uri contains "customers.csv"` | customers.csv download |

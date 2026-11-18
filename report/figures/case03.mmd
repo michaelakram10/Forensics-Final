@@ -8,7 +8,7 @@ sequenceDiagram
     R-->>C: frame 2: TXT answer (RTT 0.137 s)
     Note over C,R: 445 query/response pairs in 298.507 s (18:25:25 – 18:30:23 UTC)
     loop 445 x dnscat.<hex> queries, CNAME 164 / MX 150 / TXT 131, 445 unique names (41-240 chars)
-        C->>R: hex label encodes tunnel frame, ~1 s cadence component (160/444 intervals)
+        C->>R: hex label encodes tunnel frame, ~1 query/s per active session (160/444 near 1 s)
         R-->>C: short answer record (median RTT 0.001 s)
     end
     Note over C,R: frame 19 first CNAME; first-label session marker 0xbb73 (263 queries)

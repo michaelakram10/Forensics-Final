@@ -53,6 +53,7 @@ row carries exactly one rating.
 | F3.7 | Encrypted dnscat2 payload; only structure recoverable | T1573, T1027 | **Certain** | Structured framing (varying nonce bytes, byte[2]=0x01×439, two session markers); no key in pcap; plaintext absent | Encryption and absence of key material are directly established limits; no content claimed. |
 | F3.8 | Bidirectional volume pattern indicates interactive C2 rather than bulk one-way exfiltration | T1071.004 | **Inferred** | resp/orig L7 = 52,063/27,322 ≈1.9; hex-derived query/answer 8,090/8,067 bytes near-symmetric | Encrypted content prevents definitive data-movement classification. |
 | F3.9 | Tunnel still open when capture ended | T1071.004 | **Inferred** | Last pair frames 889/890 at 18:30:23.513/.514; `conn_state=SF`, duration matches capture; no distinguishable close marker | Absence of teardown plus capture boundary suggests active tunnel at stop. |
+| F3.10 | Polling rate rises from ≈1.01 to ≈2.06 queries/s at t=118.8 s and returns to ≈1.01 queries/s at t=256.0 s; likely two dnscat2 sessions polling rather than one client speeding up | T1071.004, T1572 | **Likely** | Zeek `dns.log`: 120 queries / 118.8 s, 282 / 137.2 s, 43 / 42.5 s; second marker `0x9658` at frame 241, t=118.813 s (18:27:23.821Z) | Rates and the new marker are measured; the one→two→one session count is inferred from the doubling. No console log was retained to confirm. |
 
 ## Case 04 — periodic TLS beaconing (synthetic)
 
@@ -75,6 +76,6 @@ row carries exactly one rating.
 |---|---:|---:|---:|---:|
 | 01 (real) | 5 | 3 | 1 | 9 |
 | 02 (synthetic) | 6 | 5 | 0 | 11 |
-| 03 (real) | 5 | 3 | 2 | 10 |
+| 03 (real) | 5 | 4 | 2 | 11 |
 | 04 (synthetic) | 5 | 3 | 2 | 10 |
-| **Total** | **21** | **14** | **5** | **40** |
+| **Total** | **21** | **15** | **5** | **41** |

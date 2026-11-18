@@ -2,7 +2,7 @@
 
 `Zeek evidence` uses the regenerated TSV logs (`zeek/tsv/`); the `second tool`
 column uses tshark/tcpdump/capinfos or the JSON Zeek run. Commands were run from
-`cases/case01_ssh_bruteforce/` with `export TZ=UTC`. Raw outputs are saved in
+`cases/case01_ssh_sessions/` with `export TZ=UTC`. Raw outputs are saved in
 `tshark/`, `tcpdump/` and `zeek/queries.md`. UIDs in TSV and JSON differ because
 `run_zeek.sh` runs Zeek twice; comparisons are by time/port/size.
 

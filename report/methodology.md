@@ -42,8 +42,11 @@ Recorded automatically in `report/tool_versions.md`:
 | scapy / pandas / matplotlib / numpy | 2.8.0 / 2.3.3 / 3.10.9+dfsg1 / 2.4.6 |
 | Time zone for all analysis | UTC (`export TZ=UTC`) |
 
-`nfpcapd`/`nfdump` and `pandoc` are **not** installed. Flow exports are derived from
-Zeek `conn.log` (Section 4.5) and PDFs are generated with WeasyPrint (Section 4.7).
+An independent NetFlow export was attempted but could not be produced: `nfpcapd`,
+`nfdump`, `softflowd` and `argus` are not installed, and installation is not possible
+in this environment (no passwordless sudo). `pandoc` is also unavailable. Flow exports
+are therefore derived from Zeek `conn.log` (Section 4.5) and PDFs are generated with
+WeasyPrint (Section 4.7).
 
 ## 3. Evidence handling
 
@@ -64,7 +67,7 @@ Zeek `conn.log` (Section 4.5) and PDFs are generated with WeasyPrint (Section 4.
 
 ```bash
 export TZ=UTC; export PATH=/opt/zeek/bin:$PATH
-./tools/run_zeek.sh case01_ssh_bruteforce case01
+./tools/run_zeek.sh case01_ssh_sessions case01
 ./tools/run_zeek.sh case02_web_sqli       case02
 ./tools/run_zeek.sh case03_dns_tunnel     case03
 ./tools/run_zeek.sh case04_c2_beacon      case04
@@ -170,6 +173,9 @@ ground-truth-based accuracy claim is presented as evidence of blindness.
 
 ## 6. Limitations
 
+- **No ground-truth console log was kept:** Case 03 burst and session-count
+  interpretations rely on traffic patterns only; no terminal scrollback was
+  available to convert (VM local +5 h) and compare against 18:27:23 / 18:29:41 UTC.
 - **Real captures (Cases 01, 03) are on loopback**: they show a single host talking to
   itself. There is no separate attacker IP or authoritative DNS server in the capture.
 - `capinfos` prints the VM's local time (UTC−5); all analysis times are UTC. The two

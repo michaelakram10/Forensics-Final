@@ -7,7 +7,8 @@ a pre-shared secret (AES-CBC + HMAC); the key is not present in the pcap, so
 message *content* is not recoverable from passive observation alone.
 
 What it DOES do:
-  * parse each DNS query name of the form dnscat.<hex labels...>
+  * parse each DNS query name of the form dnscat.<hex labels...>; tool identity
+    uses the FIRST label "dnscat" (direct-mode dnscat2 signature), not the last two labels
   * concatenate the hex labels per query -> the raw on-the-wire dnscat2 frame
   * report total extracted hex characters / bytes
   * inspect the first frame bytes for fixed markers, session/sequence fields

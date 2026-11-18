@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 LOGS = {
-    "case01_ssh_bruteforce": ["conn.log", "ssh.log"],
+    "case01_ssh_sessions": ["conn.log", "ssh.log"],
     "case02_web_sqli": ["conn.log", "http.log", "files.log"],
     "case03_dns_tunnel": ["conn.log", "dns.log"],
     "case04_c2_beacon": ["conn.log", "ssl.log"],

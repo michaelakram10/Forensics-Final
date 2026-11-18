@@ -1,8 +1,9 @@
 # Project 09 — Digital Forensics: Network Session Reconstruction
 
-This folder contains the complete execution of the manual in `project.md`: evidence
-handling, Zeek/tshark/tcpdump analysis, timelines, visualizations, confidence ratings,
-flow exports, pcap excerpts and the final forensic report.
+This repository contains the submitted digital-forensics project: evidence handling,
+Zeek/tshark/tcpdump analysis, timelines, visualizations, confidence ratings, flow
+exports, pcap excerpts and the final forensic report. The exercise manual
+(`project.md`) is deliberately not included in this public submission.
 
 **Provenance:** Cases 01 and 03 are **real loopback lab captures**; Cases 02 and 04 are
 **synthetic Scapy reconstructions**. See `report/data_provenance.md`.
@@ -15,7 +16,7 @@ flow exports, pcap excerpts and the final forensic report.
 ## How to verify my work (60 seconds)
 
 ```bash
-cd "opencode pr"
+cd Forensics-Final
 for f in cases/*/raw/*.sha256; do (cd "$(dirname "$f")" && sha256sum -c "$(basename "$f")"); done
 zeek-cut uid query < cases/case03_dns_tunnel/zeek/tsv/dns.log | head -n 3
 tshark -r cases/case02_web_sqli/raw/case02.pcap -Y 'http.request.method=="POST"' \
@@ -31,7 +32,7 @@ Expected: 4 × `OK`; `dnscat.<hex...>` query names; `username/password/Login` an
 ```text
 .
 ├── cases/
-│   ├── case01_ssh_bruteforce/   # REAL loopback SSH capture
+│   ├── case01_ssh_sessions/   # REAL loopback SSH capture
 │   ├── case02_web_sqli/         # synthetic SQLi + CSV exfil
 │   ├── case03_dns_tunnel/       # REAL loopback dnscat2 capture
 │   └── case04_c2_beacon/        # synthetic TLS beaconing
@@ -50,7 +51,7 @@ Expected: 4 × `OK`; `dnscat.<hex...>` query names; `username/password/Login` an
     ├── FINAL_REPORT.md / .pdf   # final deliverable
     ├── PRESENTATION.md / .pdf   # presenter slide deck
     ├── methodology.md
-    ├── confidence_matrix.md     # 40 findings, one rating each
+    ├── confidence_matrix.md     # 41 findings, one rating each
     ├── data_provenance.md
     ├── tool_versions.md
     ├── flows_reconciliation.md
@@ -65,7 +66,7 @@ Expected: 4 × `OK`; `dnscat.<hex...>` query names; `username/password/Login` an
 ```bash
 export TZ=UTC; export PATH=/opt/zeek/bin:$PATH
 
-for pair in "case01_ssh_bruteforce case01" "case02_web_sqli case02" \
+for pair in "case01_ssh_sessions case01" "case02_web_sqli case02" \
             "case03_dns_tunnel case03" "case04_c2_beacon case04"; do
   c=${pair%% *}; n=${pair##* }
   ./tools/run_zeek.sh "$c" "$n"
@@ -79,7 +80,7 @@ python3 ./tools/export_pdf.py
 python3 ./tools/make_appendix.py         # regenerate appendix + hash manifest
 ```
 
-`ground_truth/` and `lab/` are not needed for the analysis.
+`ground_truth/` and `lab/` are not needed for the analysis; acquisition notes for the real captures are in each case's `report/pcap_notes.md`.
 
 ## Results at a glance
 
@@ -88,7 +89,7 @@ python3 ./tools/make_appendix.py         # regenerate appendix + hash manifest
 - Case 02: 17 HTTP requests, 11 SQLi; 28,370 B CSV with identical hash from two tools.
 - Case 03: real dnscat2, 445 query/response pairs, 890 packets; dnscat2 Certain from signature.
 - Case 04: 46 C2-port attempts; 45 intervals from 46 timestamps (median 56.91 s); 86,263 B upload.
-- 40 findings: 21 Certain, 14 Likely, 5 Inferred.
+- 41 findings: 21 Certain, 15 Likely, 5 Inferred.
 
 ## Honesty note
 

@@ -32,6 +32,26 @@ no MAC-level topology, and the authoritative DNS server is not separately
 visible. Attribution to a host, user or external domain is therefore impossible
 from this pcap alone.
 
+## Acquisition note (operator-reported; public-safe)
+
+- **Who / where:** run by the `kali` operator on the isolated lab VM (the VM name
+  was not recorded in the retained notes; the custody-log host is `kali`).
+  Interface: `lo` (loopback).
+- **Capture command:** the exact `tcpdump` command line was **not retained** in
+  the operator notes. The evidence is consistent with a loopback capture filtered
+  to DNS (`sudo tcpdump -i lo udp port 53 -w raw/case03.pcap`), but this is a
+  reconstruction, not a verbatim record, and is not presented as exact.
+- **dnscat2 setup (operator-reported):** dnscat2 was run in direct DNS mode with
+  `--dns server=127.0.0.1` on the loopback resolver. The pre-shared secret is
+  **omitted** (not pasted into this public repo; no secret hash was retained).
+  The exact full command line was not retained. Console commands typed during
+  the session were `windows`, `window -i 1`, `shell`, `ping` and `exit`; the
+  second session marker at t = 118.81 s is consistent with the window/session
+  switch but cannot be confirmed without console output.
+- **Clock:** the VM clock was UTC−5. With `TZ` unset, tools render the capture as
+  13:25–13:30 local; adding 5 h gives the authoritative UTC window 18:25–18:30
+  used throughout this report.
+
 ## Phase reconstruction
 
 | Phase | Frames | UTC window | Observation |
@@ -40,6 +60,20 @@ from this pcap alone.
 | 2. Steady-state tunneling | 7–888 | 18:25:27 – 18:30:22 | 445-query stream, mostly minimal 17-byte frames (median), qtypes mixed among CNAME/MX/TXT (274 type transitions), cadence median 0.554 s with a strong ~1 s component (160/444 intervals in 0.9–1.1 s). Second session id `0x9658` appears from frame 241 (18:27:23.820768) while `0xbb73` continues to frame 803 — two overlapping logical channels. |
 | 3. Large data burst | 281–286 | 18:27:31.488949 – 18:27:31.592956 | Frames 281 and 283 are the two 240-char maximum-length names (115 decoded bytes each); frame 285 is 181 chars (86 bytes). These are the largest payload frames, consistent with a data flush / key-exchange-sized messages, answered within ~1 ms. |
 | 4. Termination | 889–890 | 18:30:23.513247 – 18:30:23.514718 | Last query (frame 889, MX, session `0x9658`) and last response (frame 890). Zeek `conn_state=SF` and `duration=298.506573` exactly span the capture. No explicit dnscat2 FIN/close message is distinguishable in the hex framing; the tunnel simply stops at the end of capture. |
+
+### Polling-rate phases (queries only, relative to first query)
+
+| Phase | Window (s) | UTC | Queries | Rate | Reading |
+|---|---|---|---:|---:|---|
+| 1 | 0.0 – 118.8 | 18:25:25 → 18:27:23 | 120 | 1.01 /s | one session polling |
+| 2 | 118.8 – 256.0 | 18:27:23 → 18:29:41 | 282 | 2.06 /s | two sessions polling; second handshake at t = 118.81 s (frame 241) |
+| 3 | 256.0 – 298.5 | 18:29:41 → 18:30:23 | 43 | 1.01 /s | back to one session |
+
+Tool identity uses the **first label `dnscat`** of `dnscat.<hex>` (direct-mode
+dnscat2 signature), not the last two labels. The typical query name is 41
+characters; long names (up to 240) appear only in the short burst at frames
+281/283/285. No ground-truth console log was kept, so session-count readings are
+Likely, not Certain.
 
 ## Byte accounting
 

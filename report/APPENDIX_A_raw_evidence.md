@@ -2,7 +2,7 @@
 
 Full raw outputs are preserved under `cases/*/tshark/`, `cases/*/tcpdump/` and `cases/*/zeek/{tsv,json}/`. The blocks below are verbatim `head -n 28` / `tail -n 12` excerpts and complete `capinfos` outputs.
 
-## case01_ssh_bruteforce
+## case01_ssh_sessions
 
 ### capinfos
 ```

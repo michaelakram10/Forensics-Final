@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# usage: tools/run_zeek.sh case01_ssh_bruteforce case01
+# usage: tools/run_zeek.sh case01_ssh_sessions case01
 set -euo pipefail
 export TZ=UTC
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"

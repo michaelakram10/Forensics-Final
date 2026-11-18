@@ -6,9 +6,11 @@ Case 03 contains a genuine dnscat2 DNS-tunnel capture. A single UDP flow on the
 loopback interface (127.0.0.1:44651 → 127.0.0.1:53) carries 890 DNS packets over
 298.506573 s: 445 queries and 445 matching responses. Every query name begins
 with the `dnscat.` prefix and is composed solely of hexadecimal labels — the
-dnscat2 signature, which identifies the tool with high confidence. Record types
-are mixed across CNAME (164), MX (150) and TXT (131), all 445 names are unique,
-and the payload framing shows two overlapping session identifiers
+dnscat2 signature, identified from the **first DNS label** `dnscat` (direct-mode
+signature), not from the last two labels or generic statistics. The typical name
+is 41 characters; the 240-character names occur only in short bursts. Record
+types are mixed across CNAME (164), MX (150) and TXT (131), all 445 names are
+unique, and the payload framing shows two overlapping session identifiers
 (`0xbb73`, `0x9658`). Only structure, sizing, timing and record-type choice are
 observable: dnscat2 encrypts the tunneled data, and the key is not present in the
 capture, so message content is **not** recoverable.
@@ -33,7 +35,7 @@ in this report are UTC (`export TZ=UTC`).
 | `report/verify_counts.md` | Zeek ↔ tshark reconciliation | 1/1 flows, 890/890 packets, 104,305/104,305 IP bytes |
 | `report/pcap_notes.md` | Evidence table, phases, byte accounting | 14-byte/frame identity |
 | `report/verification.md` | Claim-by-claim verification | two tools only (Zeek + tshark) |
-| `timeline/timeline.csv` | Custom 16-row evidence timeline | frame-number evidence refs |
+| `timeline/timeline.csv` | Custom 18-row evidence timeline | frame-number and dns.log evidence refs |
 | `report/decode_dnscat2.py` | Structural extraction script (no decryption) | reproducible |
 
 The synthetic former case is preserved under `supplementary/synthetic_case03/`
@@ -57,6 +59,20 @@ Full detail with per-row evidence refs is in `timeline/timeline.csv`.
 Phases: establishment (frames 1–6), steady-state tunneling with a large data
 burst (7–888), and termination-by-capture-end (889–890). No explicit dnscat2
 FIN/close message is distinguishable.
+
+### Polling-rate phases (query counts from Zeek `dns.log`)
+
+| Phase | Window (s since first query) | UTC | Queries | Rate | Reading |
+|---|---|---|---:|---:|---|
+| 1 | 0.0 – 118.8 | 18:25:25 → 18:27:23 | 120 | 1.01 /s | one session polling |
+| 2 | 118.8 – 256.0 | 18:27:23 → 18:29:41 | 282 | 2.06 /s | two sessions polling; second handshake at t = 118.81 s (frame 241, 18:27:23.821Z) |
+| 3 | 256.0 – 298.5 | 18:29:41 → 18:30:23 | 43 | 1.01 /s | back to one session |
+
+The overall mean of ≈1.49 queries/s is therefore misleading if read as a single
+client rate: each session contributes approximately **1 query/s**, and the
+middle phase is consistent with two sessions polling concurrently. This is a
+Likely interpretation — the rate and the second marker are measured; the session
+count is inferred because no console log was retained.
 
 ## Findings
 
@@ -89,11 +105,12 @@ concurrent logical channels multiplexed on the one UDP flow. This is an
 interpretation of the F3.4a observation, not a directly observed fact.
 ATT&CK: T1572.
 
-### F3.5 — Automated low-rate beaconing cadence (Likely)
-445 queries over 298.5 s (≈1.49/s), inter-query intervals mean 0.672 s / median
-0.554 s, with 160 of 444 intervals in the 0.9–1.1 s band. This regular, machine-
-generated cadence is consistent with an automated tunneling client rather than
-human DNS activity. ATT&CK: T1071.004.
+### F3.5 — Automated per-session polling cadence (Likely)
+445 queries over 298.5 s (≈1.49/s overall), inter-query intervals mean 0.672 s /
+median 0.554 s, with 160 of 444 intervals in the 0.9–1.1 s band. Read with the
+phase table above, this is approximately **1 query/s per active dnscat2 session**
+(≈1.01/s in phases 1 and 3, ≈2.06/s in phase 2) rather than one client changing
+speed. Human DNS activity would not sustain this regularity. ATT&CK: T1071.004.
 
 ### F3.6 — Large maximum-length name burst suggests a data flush (Likely)
 Frames 281 and 283 are both 240-character names (115 decoded bytes) and frame
@@ -121,9 +138,16 @@ records `conn_state=SF` with duration exactly matching the capture. This
 suggests recording stopped while the tunnel was still active, rather than a
 clean session teardown being observed. ATT&CK: T1071.004.
 
-**Confidence counts:** Certain 5 (F3.1, F3.2, F3.3, F3.4a, F3.7) · Likely 3
-(F3.4b, F3.5, F3.6) · Inferred 2 (F3.8, F3.9). Total 10 findings (mixed-rating
-observation and interpretation are kept in separate rows).
+### F3.10 — Polling rate indicates one → two → one sessions (Likely)
+The measured query rate doubles at t = 118.8 s (120 queries in 118.8 s → 282 in
+137.2 s, 1.01/s → 2.06/s) and returns to ≈1.01/s at t = 256.0 s (43 queries in
+42.5 s). The new session marker `0x9658` first appears at t = 118.813 s
+(18:27:23.821Z, frame 241), supporting the interpretation that a second session
+started and later stopped. ATT&CK: T1071.004, T1572.
+
+**Confidence counts:** Certain 5 (F3.1, F3.2, F3.3, F3.4a, F3.7) · Likely 4
+(F3.4b, F3.5, F3.6, F3.10) · Inferred 2 (F3.8, F3.9). Total 11 findings
+(mixed-rating observation and interpretation are kept in separate rows).
 
 ## Cross-tool verification
 
@@ -174,3 +198,7 @@ loss notice is a benign false positive on a UDP-only flow (0.0% loss reported).
    is captured, so no domain or infrastructure attribution is possible.
 6. **No baseline:** this is a single isolated flow with no legitimate DNS
    baseline; comparisons to normal DNS are qualitative only.
+7. **No ground-truth console log was kept:** interpretations of the bursts and
+   the one → two → one session-count change rely on traffic patterns only; no
+   terminal scrollback was available to convert and compare against 18:27:23 and
+   18:29:41 UTC.

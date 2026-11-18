@@ -1,21 +1,19 @@
 # Network Session Reconstruction — Forensic Report
 
 **Project 09 — Digital Forensics**
-**Date:** 2026-11-18  **Version:** 1.1
+**Date:** 2026-11-18  **Version:** 1.2
 
 | Role | Owner of (files) | Assigned to |
 |---|---|---|
-| Log/pcap analyst | `custody/custody_log.csv`, `cases/*/tshark/capinfos.txt`, `cases/*/report/pcap_notes.md` | Team member 1 |
-| Zeek-log specialist | `cases/*/zeek/{tsv,json}/*`, `cases/*/zeek/queries.md`, `tools/run_zeek.sh` | Team member 2 |
-| Cross-tool verification owner | `cases/*/tshark/*`, `cases/*/tcpdump/*`, `tools/verify_counts.py`, `cases/*/report/verification.md` | Team member 3 |
-| Timeline builder | `tools/build_timeline.py`, `cases/*/timeline/timeline.csv` | Team member 4 |
-| Timeline-visualization author | `tools/generate_timelines.py`, `cases/*/viz/*.png`, `report/figures/*.mmd` | Team member 5 |
-| Confidence-rating author | `report/confidence_matrix.md` | Team member 6 |
-| Report writer | `cases/*/report/report.md`, this file, `report/methodology.md` | Team member 7 |
-| Presenter / evidence custodian | `tools/seal_evidence.sh`, custody log, `report/PRESENTATION.md` | Team member 8 |
+| Evidence custody, pcap analysis & presentation | custody log, `seal_evidence.sh`, `capinfos.txt`, `pcap_notes.md`, `PRESENTATION.md` | Michael Akram |
+| Zeek analysis & cross-tool verification | `zeek/*`, `run_zeek.sh`, `tshark/*`, `tcpdump/*`, `verify_counts.py`, `verification.md` | Yousef Basem |
+| Timeline construction & visualization | `build_timeline.py`, `generate_timelines.py`, `timeline.csv`, `viz/*.png`, `figures/*.mmd` | Mahgoub Hany |
+| Confidence ratings & methodology | `confidence_matrix.md`, `methodology.md` | Mohamed Mohamed Fawzy |
+| Report writing & data provenance | case `report/report.md`, this file, `data_provenance.md`, appendices | Yasser Yasser Mahmmoud |
 
-*Individual names were not recorded in the lab handover; the table maps each role to its
-deliverables so names can be inserted without restructuring the report.*
+*Five named contributors were supplied; the original eight role labels are grouped into
+these five ownership areas. No separate assignee was recorded for sub-tasks not named
+under a person.*
 
 ---
 
@@ -33,7 +31,7 @@ Zeek↔tshark reconciliations are CONFIRMED for flows, packets and IP bytes.
 | 03 | **Real** loopback dnscat2 capture | DNS tunnelling (T1071.004, T1572) | `127.0.0.1:53` | 116,765 frame B; 79,385 L7 B; 8,090 B encoded queries / 8,067 B answers | dnscat2 identified **Certain** from the `dnscat.` signature on all 445 queries | Encrypted payload: structure only, no plaintext or exfiltration quantity |
 | 04 | Synthetic | Periodic TLS beaconing on 8443 (T1071.001, T1571/T1573, T1008) | 203.0.113.50 / .51 | 86,263 B upload; 4,219 B tasking response | 46 attempts, ~57 s median interval, same SNI on both IPs, 44 stream byte checks match | Tasking/exfiltration purpose and single-implant identity inferred |
 
-**Confidence totals:** 21 Certain, 14 Likely, 5 Inferred across 40 findings — see
+**Confidence totals:** 21 Certain, 15 Likely, 5 Inferred across 41 findings — see
 `report/confidence_matrix.md`. Every row carries exactly one rating; observation and
 interpretation are separate findings.
 
@@ -119,7 +117,7 @@ are observable.
 
 | Evidence | Key facts |
 |---|---|
-| `cases/case01_ssh_bruteforce/raw/case01.pcap` | SHA-256 `771e90d78db4d11cfda58d345b490f612986c06c4e72627252f2c916de280c99`; sidecar `OK`; 107 packets, 17,414 frame bytes, 15,916 IP bytes |
+| `cases/case01_ssh_sessions/raw/case01.pcap` | SHA-256 `771e90d78db4d11cfda58d345b490f612986c06c4e72627252f2c916de280c99`; sidecar `OK`; 107 packets, 17,414 frame bytes, 15,916 IP bytes |
 | `zeek/tsv/conn.log`, `zeek/json/conn.log` | 3 rows, all `127.0.0.1:ephemeral → 127.0.0.1:22`, `SF`, service ssh |
 | `zeek/tsv/ssh.log`, `software.log` | 3 × libssh_0.12.2 client, 3 × OpenSSH_10.6p1 server; negotiated algorithms; auth heuristic unset/0, F/5, T/5 |
 | `tshark/capinfos.txt`, `conv_tcp.txt`, `frame_detail.txt`, `ssh_banners.txt`, `tcp_flags.txt` | 3 streams; banners 3/3; 3 SYN, 3 SYN/ACK, 6 FIN, 0 RST |
@@ -141,7 +139,7 @@ are observable.
 
 **Figure 3.1** — Three SSH sessions on loopback, 2026-11-16 (UTC):
 
-![Figure 3.1 — three SSH sessions on loopback](cases/case01_ssh_bruteforce/viz/case01_ssh_bruteforce_timeline.png)
+![Figure 3.1 — three SSH sessions on loopback](cases/case01_ssh_sessions/viz/case01_ssh_sessions_timeline.png)
 
 *Short session 34416 closes in
 0.121 s; long session A (34430) runs 19.859 s; long session B (54844) starts during
@@ -167,7 +165,7 @@ as *consistent with*, not proven.
 CONFIRMED. Ethernet identity: **17,414 − 14 × 107 = 15,916**. All 18 per-stream
 counters match. Zeek duration deltas of 29/39/67 µs are explained by Zeek ending at
 the server FIN versus tshark including the final ACK. Full claim table:
-`cases/case01_ssh_bruteforce/report/verification.md`.
+`cases/case01_ssh_sessions/report/verification.md`.
 
 ### 3.6 Data moved
 
@@ -251,10 +249,12 @@ Every query name in this real capture begins with the `dnscat.` signature and co
 only hex labels — a direct identification of dnscat2 (Certain). Records are mixed
 CNAME (164), MX (150) and TXT (131) across 445 unique names (41–240 chars, mean
 43.398, median 41; two 240-char maxima at frames 281/283). Record-type rotation (274
-transitions) and a ~1 s cadence component (160/444 intervals) are consistent with an
-automated tunneling client. First-label bytes show two session markers, `0xbb73` (263
-queries) and `0x9658` (182 queries), overlapping across frames 241–803 — likely two
-concurrent logical channels. A short maximum-length-name burst at 18:27:31Z suggests
+transitions) and a ≈1 query/s per-session cadence component (160/444 intervals near
+1 s) are consistent with an automated tunneling client. Tool identity is taken from the
+**first DNS label `dnscat`** (direct-mode signature), not the last two labels. The
+typical query name is 41 characters; the 240-character names occur only in short bursts.
+First-label bytes show two session markers, `0xbb73` (263 queries) and `0x9658` (182
+queries), overlapping across frames 241–803 — likely two concurrent logical channels. A short maximum-length-name burst at 18:27:31Z suggests
 a batched data flush. The capture ends immediately after the final query/response pair,
 with no distinguishable teardown.
 
@@ -266,7 +266,7 @@ with no distinguishable teardown.
 | `zeek/tsv/dns.log`, `conn.log` | 445 queries + 445 responses; 1 UDP flow `Chubce1wik6p4KDZeg`, 298.506573 s |
 | `tshark/dns_queries.tsv`, `dns_answers.tsv`, `dns_stats.txt` | qtype counts, lengths, timestamps |
 | `report/decode_dnscat2.py`, `tshark/dnscat2_extract.txt` | 8,090 B encoded queries / 8,067 B answers; structural markers |
-| `timeline/timeline.csv` | 16 evidence-referenced events |
+| `timeline/timeline.csv` | 18 evidence-referenced events |
 
 ### 5.3 Reconstructed timeline (subset)
 
@@ -275,6 +275,14 @@ with no distinguishable teardown.
 frame 241 (18:27:23Z), the large-name burst at frames 281/283/285 (18:27:31Z), and
 the final pair frames 889/890 (18:30:23.513/.514Z). Full timestamps and evidence refs
 are in the CSV.
+
+**Polling-rate phases** (from Zeek `dns.log`; phase boundaries at t = 118.8 s and 256.0 s):
+
+| Phase | Window (s since first query) | UTC | Queries | Rate | Reading |
+|---|---|---|---:|---:|---|
+| 1 | 0.0 – 118.8 | 18:25:25 → 18:27:23 | 120 | 1.01 /s | one session polling |
+| 2 | 118.8 – 256.0 | 18:27:23 → 18:29:41 | 282 | 2.06 /s | two sessions polling; second handshake at t = 118.81 s |
+| 3 | 256.0 – 298.5 | 18:29:41 → 18:30:23 | 43 | 1.01 /s | back to one session |
 
 **Figure 5.1** — 445 query/response pairs over a single loopback UDP flow, 18:25:25–18:30:23 UTC (298.5 s):
 
@@ -286,9 +294,11 @@ are in the CSV.
 
 ### 5.4 Findings
 
-F3.1–F3.9 (with F3.4 split into observation 4a and interpretation 4b) in
-`report/confidence_matrix.md`: Certain 5 / Likely 3 / Inferred 2. Tool identity is
-Certain from the `dnscat.` signature, not from generic traffic statistics.
+F3.1–F3.10 (with F3.4 split into observation 4a and interpretation 4b) in
+`report/confidence_matrix.md`: Certain 5 / Likely 4 / Inferred 2. F3.10 rates the
+one → two → one session interpretation **Likely** from the measured polling-rate
+doubling and the second session marker. Tool identity is Certain from the first-label
+`dnscat.` signature, not from generic traffic statistics.
 ATT&CK T1071.004, T1572, T1573/T1027, T1048.
 
 ### 5.5 Cross-tool verification
@@ -311,8 +321,10 @@ be attributed.
 
 Loopback-only capture (no real client/server IPs, no host evidence, authoritative
 server not separately visible); UTC vs VM-local time distinction; encrypted dnscat2
-payload; no legitimate DNS baseline in this single-flow capture. Old synthetic-case
-claims (base32, 14,000-byte secret, `exfil-lab.test`, 202 queries) do not apply.
+payload; no legitimate DNS baseline in this single-flow capture. **No ground-truth
+console log was kept; interpretations of bursts and the session-count change rely on
+traffic patterns only.** Old synthetic-case claims (base32, 14,000-byte secret,
+`exfil-lab.test`, 202 queries) do not apply.
 
 ---
 
@@ -386,9 +398,9 @@ Encrypted payload; synthetic TLS without Certificate (Zeek 9.0.1 still reports
 |---|---:|---:|---:|---:|
 | 01 (real) | 5 | 3 | 1 | 9 |
 | 02 (synthetic) | 6 | 5 | 0 | 11 |
-| 03 (real) | 5 | 3 | 2 | 10 |
+| 03 (real) | 5 | 4 | 2 | 11 |
 | 04 (synthetic) | 5 | 3 | 2 | 10 |
-| **Total** | **21** | **14** | **5** | **40** |
+| **Total** | **21** | **15** | **5** | **41** |
 
 Full justifications: `report/confidence_matrix.md`; rubric: `report/methodology.md` §5.
 No "frozen before unsealing" claim is made — see Appendix F.
@@ -426,25 +438,29 @@ excerpts, flow CSVs and the appendix, are listed. Scope is stated in the manifes
 
 ## Appendix C — Chain of Custody
 
-`custody/custody_log.csv` (10 entries):
+`custody/custody_log.csv` (14 entries; `notes` column marks superseded
+synthetic captures and records public-safe acquisition details):
 
 ```csv
-utc_time,user,host,case,action,pcap_sha256
-2026-11-18T19:06:05Z,kali,kali,case01,"generated and sealed by Presenter",09e1de1777d611debc7bbee5cbb63478c5a6c7a5aec04edccc086bcbc90b6d8e
-2026-11-18T19:06:05Z,kali,kali,case02,"generated and sealed by Presenter",e7980e5a135355fe2535a7df9bebb7dfbf73805edafd51a011a3e0fa3d5823c9
-2026-11-18T19:06:05Z,kali,kali,case03,"generated and sealed by Presenter",00dbcc9650c4f4a85e7296b5a26127d0f35763db1eaddc5b488ed47b45e6908c
-2026-11-18T19:06:05Z,kali,kali,case04,"generated and sealed by Presenter",eb59e98b1fcf78c39cdc39ffc96d3c81dfffcc96d899f3206152e04ddf7cd675
-2026-11-18T19:12:04Z,kali,kali,case01,"Zeek + tshark + tcpdump analysis session",09e1de1777d611debc7bbee5cbb63478c5a6c7a5aec04edccc086bcbc90b6d8e
-2026-11-18T19:12:04Z,kali,kali,case02,"Zeek + tshark + tcpdump analysis session",e7980e5a135355fe2535a7df9bebb7dfbf73805edafd51a011a3e0fa3d5823c9
-2026-11-18T19:12:04Z,kali,kali,case03,"Zeek + tshark + tcpdump analysis session",00dbcc9650c4f4a85e7296b5a26127d0f35763db1eaddc5b488ed47b45e6908c
-2026-11-18T19:12:04Z,kali,kali,case04,"Zeek + tshark + tcpdump analysis session",eb59e98b1fcf78c39cdc39ffc96d3c81dfffcc96d899f3206152e04ddf7cd675
-2026-11-18T19:29:12Z,kali,kali,case01,"replaced synthetic with real loopback SSH lab capture",771e90d78db4d11cfda58d345b490f612986c06c4e72627252f2c916de280c99
-2026-11-18T19:29:12Z,kali,kali,case03,"replaced synthetic with real loopback dnscat2 capture",e06cac58e6204357992523b8b75f8c22503c7a82e313f00697c2bf74f7ed44eb
+utc_time,user,host,case,action,pcap_sha256,notes
+2026-11-16T16:21:29Z,kali,kali,case01,"real loopback SSH capture acquired with tcpdump on lo; operator-reported",771e90d78db4d11cfda58d345b490f612986c06c4e72627252f2c916de280c99,"acquisition note: cases/case01_ssh_sessions/report/pcap_notes.md; VM clock UTC-5 plus 5h equals UTC; VM name not recorded"
+2026-11-18T18:30:24Z,kali,kali,case03,"real loopback dnscat2 DNS capture acquired; exact tcpdump command not retained",e06cac58e6204357992523b8b75f8c22503c7a82e313f00697c2bf74f7ed44eb,"acquisition note: cases/case03_dns_tunnel/report/pcap_notes.md; direct-mode --dns server=127.0.0.1; secret omitted; VM clock UTC-5 plus 5h equals UTC"
+2026-11-18T19:06:05Z,kali,kali,case01,"generated and sealed by Presenter",09e1de1777d611debc7bbee5cbb63478c5a6c7a5aec04edccc086bcbc90b6d8e,"superseded synthetic capture; preserved under supplementary/synthetic_case01/; replaced at 19:29:12Z"
+2026-11-18T19:06:05Z,kali,kali,case02,"generated and sealed by Presenter",e7980e5a135355fe2535a7df9bebb7dfbf73805edafd51a011a3e0fa3d5823c9,"synthetic Scapy primary case; unchanged by the re-audit"
+2026-11-18T19:06:05Z,kali,kali,case03,"generated and sealed by Presenter",00dbcc9650c4f4a85e7296b5a26127d0f35763db1eaddc5b488ed47b45e6908c,"superseded synthetic capture; preserved under supplementary/synthetic_case03/; replaced at 19:29:12Z"
+2026-11-18T19:06:05Z,kali,kali,case04,"generated and sealed by Presenter",eb59e98b1fcf78c39cdc39ffc96d3c81dfffcc96d899f3206152e04ddf7cd675,"synthetic Scapy primary case; unchanged by the re-audit"
+2026-11-18T19:12:04Z,kali,kali,case01,"Zeek + tshark + tcpdump analysis session",09e1de1777d611debc7bbee5cbb63478c5a6c7a5aec04edccc086bcbc90b6d8e,"superseded synthetic hash; see replacement and acquisition rows for the real capture"
+2026-11-18T19:12:04Z,kali,kali,case02,"Zeek + tshark + tcpdump analysis session",e7980e5a135355fe2535a7df9bebb7dfbf73805edafd51a011a3e0fa3d5823c9,"synthetic primary case"
+2026-11-18T19:12:04Z,kali,kali,case03,"Zeek + tshark + tcpdump analysis session",00dbcc9650c4f4a85e7296b5a26127d0f35763db1eaddc5b488ed47b45e6908c,"superseded synthetic hash; see replacement and acquisition rows for the real capture"
+2026-11-18T19:12:04Z,kali,kali,case04,"Zeek + tshark + tcpdump analysis session",eb59e98b1fcf78c39cdc39ffc96d3c81dfffcc96d899f3206152e04ddf7cd675,"synthetic primary case"
+2026-11-18T19:29:12Z,kali,kali,case01,"replaced synthetic with real loopback SSH lab capture",771e90d78db4d11cfda58d345b490f612986c06c4e72627252f2c916de280c99,"sealed evidence is the real 107-packet capture; primary folder renamed to case01_ssh_sessions in re-audit"
+2026-11-18T19:29:12Z,kali,kali,case03,"replaced synthetic with real loopback dnscat2 capture",e06cac58e6204357992523b8b75f8c22503c7a82e313f00697c2bf74f7ed44eb,"sealed evidence is the real 890-packet capture; acquisition note records operator-reported setup"
+2026-11-18T19:56:23Z,kali,kali,case01,"re-audit: acquisition notes added, case01 folder renamed to case01_ssh_sessions",n/a,"documentation-only custody entry; no pcap changed"
+2026-11-18T19:56:23Z,kali,kali,case03,"re-audit: acquisition notes added and polling-rate phases documented",n/a,"documentation-only custody entry; no pcap changed"
 ```
 
-The first eight entries refer to the original synthetic captures; Cases 01 and 03 were
-subsequently replaced, and the superseded reconstructions are preserved under
-`supplementary/`.
+The original synthetic Case 01/03 entries are explicitly marked superseded by the
+real-capture replacements; their pcaps are preserved under `supplementary/`.
 
 ## Appendix D — Scripts
 
@@ -457,7 +473,7 @@ scripts are excluded from this public submission (see Appendix F).
 
 ## Appendix E — Derived views
 
-- Timelines: `cases/*/timeline/timeline.csv` — 12 / 17 / 16 / 14 events for Cases 01–04,
+- Timelines: `cases/*/timeline/timeline.csv` — 12 / 17 / 18 / 14 events for Cases 01–04,
   each with an `evidence_ref` to a log uid or frame.
 - Charts: `cases/*/viz/*_timeline.png`; sequence diagrams: `report/figures/case01.mmd` …
   `case04.mmd`.

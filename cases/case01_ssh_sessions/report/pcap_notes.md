@@ -6,6 +6,28 @@ no port scan and no 36-attempt brute-force burst in this file; those claims
 belong to the preserved synthetic case under `supplementary/synthetic_case01/`
 and are **not** evidence here.
 
+## Acquisition note (operator-reported; public-safe)
+
+- **Who / where:** run by the `kali` operator on the isolated lab VM (the VM name
+  was not recorded in the retained notes; the custody-log host is `kali`).
+  Interface: `lo` (loopback).
+- **Exact capture command** recorded in the setup notes, with the output filename
+  normalised to the sealed evidence name:
+
+  ```bash
+  sudo tcpdump -i lo port 22 -w raw/case01.pcap
+  ```
+
+  It was started in the background and stopped with `sudo kill $TCPDUMP_PID`.
+- **What generated the sessions:** a local OpenSSH server on `127.0.0.1:22` and
+  Hydra v9.7 against the same loopback address (`ssh://127.0.0.1`, `-t 1 -I`)
+  with a short wordlist. Account names and wordlist contents are omitted. The
+  sealed pcap itself shows only three completed sessions; the original synthetic
+  exercise's 36-attempt count is **not** evidence in this capture.
+- **Clock:** the VM clock was UTC−5. The local display 11:20:54–11:21:28 becomes
+  16:20:54–16:21:28 UTC by adding 5 h; packet epochs and all reported times are
+  UTC.
+
 ## Evidence table
 
 | Item | Measured value | Source |

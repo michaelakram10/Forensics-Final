@@ -3,7 +3,7 @@
 ## Presenter deck
 
 **Project:** Digital Forensics — Network Session Reconstruction
-**Date:** 2026-11-18  **Version:** 1.0
+**Date:** 2026-11-18  **Version:** 1.2
 
 ---
 
@@ -70,6 +70,7 @@ All four reconciliations: **CONFIRMED** for flows, packets and IP bytes.
 - Query names carry the `dnscat.` prefix — a dnscat2 signature on **all 445 queries** (tool identity Certain, not inferred from statistics).
 - qtypes CNAME 164 / MX 150 / TXT 131; 445 unique hex names, 41–240 chars; two session markers `0xbb73`/`0x9658` overlap (likely two logical channels).
 - Zeek ↔ tshark: 1/1 flows, 890/890 packets, 104,305/104,305 IP bytes; 116,765 frame bytes − 14×890 = 104,305.
+- Polling-rate phases: 0–118.8 s 120 queries (≈1.01/s, 1 session); 118.8–256.0 s 282 (≈2.06/s, 2 sessions, second handshake at t=118.81 s); 256.0–298.5 s 43 (≈1.01/s, back to 1 session) — Likely.
 - Honest limitation: dnscat2 payload is encrypted; only structure, timing and volume are recoverable — no plaintext, file or exfil quantity.
 
 ---
@@ -92,6 +93,7 @@ All four reconciliations: **CONFIRMED** for flows, packets and IP bytes.
 | **Inferred** | Statistics/timing/analogy, or confirmation would need unavailable data. |
 
 - Observation and interpretation are **separate findings**.
+- 41 findings: 21 Certain, 15 Likely, 5 Inferred.
 - Tool identity, intent, host effects: at most Likely (usually Inferred).
 - This was a **manual-guided** exercise, not a blind one — no claim of frozen-before-unsealing is made.
 
@@ -112,14 +114,15 @@ All four reconciliations: **CONFIRMED** for flows, packets and IP bytes.
 - SSH, dnscat2 and TLS payloads are encrypted: command names, credentials and file contents are not determinable.
 - No host evidence: cookie validity, file-write success, tasking/exfiltration intent are inferences.
 - Synthetic TLS omits a Certificate message (Zeek 9.0.1 still reports `established=T`).
-- `nfpcapd`/`nfdump` and `pandoc` unavailable: flow CSVs are Zeek exports; PDFs via WeasyPrint.
+- No ground-truth console log was kept; Case 03 burst/session interpretations rely on traffic patterns only.
+- `nfpcapd`/`nfdump` install was attempted but no passwordless sudo is available; flow CSVs remain Zeek exports. `pandoc` is unavailable, so PDFs use WeasyPrint.
 
 ---
 
 ## Slide 11 — How to verify my work (60 seconds)
 
 ```bash
-cd "opencode pr"
+cd Forensics-Final
 for f in cases/*/raw/*.sha256; do (cd "$(dirname "$f")" && sha256sum -c "$(basename "$f")"); done
 zeek-cut uid query < cases/case03_dns_tunnel/zeek/tsv/dns.log | head -n 3
 tshark -r cases/case02_web_sqli/raw/case02.pcap -Y 'http.request.method=="POST"' \

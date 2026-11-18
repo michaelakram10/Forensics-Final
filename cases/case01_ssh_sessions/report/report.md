@@ -1,6 +1,6 @@
 # Case 01 — SSH sessions on loopback (real capture)
 
-**Case directory:** `cases/case01_ssh_bruteforce/`  
+**Case directory:** `cases/case01_ssh_sessions/`  
 **Analysis basis:** Zeek TSV/JSON logs regenerated from the sealed pcap; tshark and tcpdump raw evidence.  
 **Time basis:** UTC (`export TZ=UTC`). Ratings follow `../../report/confidence_matrix.md` (Case 01 rows correspond to the findings below).
 

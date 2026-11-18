@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """export_flows.py [case ...] -> cases/<case>/flows/caseNN_flows.csv + report/flows_reconciliation.md
 
-nfpcapd/nfdump are not installed in this environment, so these are NOT NetFlow
-records from a flow exporter. They are a tabular FLOW EXPORT derived from Zeek's
+nfpcapd/nfdump are not installed in this environment and cannot be installed here
+(no passwordless sudo), so these are NOT NetFlow records from a flow exporter.
+They are a tabular FLOW EXPORT derived from Zeek's
 conn.log (which is itself a bidirectional flow log), emitted in a NetFlow-like
 shape so the flow view can be read and reconciled separately. Provenance is
 stated in each case's flows/README.md. tshark stream counts provide the
@@ -16,8 +17,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CASES = ["case01_ssh_bruteforce", "case02_web_sqli", "case03_dns_tunnel", "case04_c2_beacon"]
-BASE = {"case01_ssh_bruteforce": "case01", "case02_web_sqli": "case02",
+CASES = ["case01_ssh_sessions", "case02_web_sqli", "case03_dns_tunnel", "case04_c2_beacon"]
+BASE = {"case01_ssh_sessions": "case01", "case02_web_sqli": "case02",
         "case03_dns_tunnel": "case03", "case04_c2_beacon": "case04"}
 COLS = ["flow_id", "start_time_utc", "end_time_utc", "src_ip", "src_port", "dst_ip", "dst_port",
         "proto", "service", "conn_state", "orig_pkts", "resp_pkts", "orig_bytes", "resp_bytes",
@@ -91,10 +92,13 @@ if __name__ == "__main__":
         rows.append((case, z, t))
         print(f"{case}: {z} Zeek flows -> flow CSV; {t} tshark streams")
     out = ["# Flow-export reconciliation", "",
-           "Because `nfpcapd`/`nfdump` are unavailable, the flow CSVs under `cases/*/flows/` are "
-           "exports of Zeek `conn.log` (a bidirectional flow log), not independent NetFlow "
-           "exports. They are included to give a flow-oriented view. The independent column "
-           "below is tshark's TCP/UDP stream count from the sealed pcap.", "",
+           "An independent NetFlow export was attempted but could not be produced: "
+           "`nfpcapd`/`nfdump`, `softflowd` and `argus` are not installed, and "
+           "`sudo apt install nfdump` is not possible here (no passwordless sudo). The flow "
+           "CSVs under `cases/*/flows/` therefore remain exports of Zeek `conn.log` (a "
+           "bidirectional flow log), **not** independent NetFlow exporter records. They give "
+           "a flow-oriented view; the independent column below is tshark's TCP/UDP stream "
+           "count from the sealed pcap, so the comparison is still a genuine cross-tool check.", "",
            "| Case | Zeek conn.log rows | Flow CSV rows | tshark streams | Status |",
            "|---|---:|---:|---:|---|"]
     for case, z, t in rows:

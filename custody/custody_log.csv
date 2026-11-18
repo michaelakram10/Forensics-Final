@@ -1,11 +1,15 @@
-utc_time,user,host,case,action,pcap_sha256
-2026-11-18T19:06:05Z,kali,kali,case01,"generated and sealed by Presenter",09e1de1777d611debc7bbee5cbb63478c5a6c7a5aec04edccc086bcbc90b6d8e
-2026-11-18T19:06:05Z,kali,kali,case02,"generated and sealed by Presenter",e7980e5a135355fe2535a7df9bebb7dfbf73805edafd51a011a3e0fa3d5823c9
-2026-11-18T19:06:05Z,kali,kali,case03,"generated and sealed by Presenter",00dbcc9650c4f4a85e7296b5a26127d0f35763db1eaddc5b488ed47b45e6908c
-2026-11-18T19:06:05Z,kali,kali,case04,"generated and sealed by Presenter",eb59e98b1fcf78c39cdc39ffc96d3c81dfffcc96d899f3206152e04ddf7cd675
-2026-11-18T19:12:04Z,kali,kali,case01,"Zeek + tshark + tcpdump analysis session",09e1de1777d611debc7bbee5cbb63478c5a6c7a5aec04edccc086bcbc90b6d8e
-2026-11-18T19:12:04Z,kali,kali,case02,"Zeek + tshark + tcpdump analysis session",e7980e5a135355fe2535a7df9bebb7dfbf73805edafd51a011a3e0fa3d5823c9
-2026-11-18T19:12:04Z,kali,kali,case03,"Zeek + tshark + tcpdump analysis session",00dbcc9650c4f4a85e7296b5a26127d0f35763db1eaddc5b488ed47b45e6908c
-2026-11-18T19:12:04Z,kali,kali,case04,"Zeek + tshark + tcpdump analysis session",eb59e98b1fcf78c39cdc39ffc96d3c81dfffcc96d899f3206152e04ddf7cd675
-2026-11-18T19:29:12Z,kali,kali,case01,"replaced synthetic with real loopback SSH lab capture",771e90d78db4d11cfda58d345b490f612986c06c4e72627252f2c916de280c99
-2026-11-18T19:29:12Z,kali,kali,case03,"replaced synthetic with real loopback dnscat2 capture",e06cac58e6204357992523b8b75f8c22503c7a82e313f00697c2bf74f7ed44eb
+utc_time,user,host,case,action,pcap_sha256,notes
+2026-11-16T16:21:29Z,kali,kali,case01,"real loopback SSH capture acquired with tcpdump on lo; operator-reported",771e90d78db4d11cfda58d345b490f612986c06c4e72627252f2c916de280c99,"acquisition note: cases/case01_ssh_sessions/report/pcap_notes.md; VM clock UTC-5 plus 5h equals UTC; VM name not recorded"
+2026-11-18T18:30:24Z,kali,kali,case03,"real loopback dnscat2 DNS capture acquired; exact tcpdump command not retained",e06cac58e6204357992523b8b75f8c22503c7a82e313f00697c2bf74f7ed44eb,"acquisition note: cases/case03_dns_tunnel/report/pcap_notes.md; direct-mode --dns server=127.0.0.1; secret omitted; VM clock UTC-5 plus 5h equals UTC"
+2026-11-18T19:06:05Z,kali,kali,case01,"generated and sealed by Presenter",09e1de1777d611debc7bbee5cbb63478c5a6c7a5aec04edccc086bcbc90b6d8e,"superseded synthetic capture; preserved under supplementary/synthetic_case01/; replaced at 19:29:12Z"
+2026-11-18T19:06:05Z,kali,kali,case02,"generated and sealed by Presenter",e7980e5a135355fe2535a7df9bebb7dfbf73805edafd51a011a3e0fa3d5823c9,"synthetic Scapy primary case; unchanged by the re-audit"
+2026-11-18T19:06:05Z,kali,kali,case03,"generated and sealed by Presenter",00dbcc9650c4f4a85e7296b5a26127d0f35763db1eaddc5b488ed47b45e6908c,"superseded synthetic capture; preserved under supplementary/synthetic_case03/; replaced at 19:29:12Z"
+2026-11-18T19:06:05Z,kali,kali,case04,"generated and sealed by Presenter",eb59e98b1fcf78c39cdc39ffc96d3c81dfffcc96d899f3206152e04ddf7cd675,"synthetic Scapy primary case; unchanged by the re-audit"
+2026-11-18T19:12:04Z,kali,kali,case01,"Zeek + tshark + tcpdump analysis session",09e1de1777d611debc7bbee5cbb63478c5a6c7a5aec04edccc086bcbc90b6d8e,"superseded synthetic hash; see replacement and acquisition rows for the real capture"
+2026-11-18T19:12:04Z,kali,kali,case02,"Zeek + tshark + tcpdump analysis session",e7980e5a135355fe2535a7df9bebb7dfbf73805edafd51a011a3e0fa3d5823c9,"synthetic primary case"
+2026-11-18T19:12:04Z,kali,kali,case03,"Zeek + tshark + tcpdump analysis session",00dbcc9650c4f4a85e7296b5a26127d0f35763db1eaddc5b488ed47b45e6908c,"superseded synthetic hash; see replacement and acquisition rows for the real capture"
+2026-11-18T19:12:04Z,kali,kali,case04,"Zeek + tshark + tcpdump analysis session",eb59e98b1fcf78c39cdc39ffc96d3c81dfffcc96d899f3206152e04ddf7cd675,"synthetic primary case"
+2026-11-18T19:29:12Z,kali,kali,case01,"replaced synthetic with real loopback SSH lab capture",771e90d78db4d11cfda58d345b490f612986c06c4e72627252f2c916de280c99,"sealed evidence is the real 107-packet capture; primary folder renamed to case01_ssh_sessions in re-audit"
+2026-11-18T19:29:12Z,kali,kali,case03,"replaced synthetic with real loopback dnscat2 capture",e06cac58e6204357992523b8b75f8c22503c7a82e313f00697c2bf74f7ed44eb,"sealed evidence is the real 890-packet capture; acquisition note records operator-reported setup"
+2026-11-18T19:56:23Z,kali,kali,case01,"re-audit: acquisition notes added, case01 folder renamed to case01_ssh_sessions",n/a,"documentation-only custody entry; no pcap changed"
+2026-11-18T19:56:23Z,kali,kali,case03,"re-audit: acquisition notes added and polling-rate phases documented",n/a,"documentation-only custody entry; no pcap changed"

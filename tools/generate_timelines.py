@@ -24,7 +24,7 @@ from matplotlib.ticker import FuncFormatter
 
 ROOT = Path(__file__).resolve().parents[1]
 CASES = {
-    "case01_ssh_bruteforce": "Case 01 - SSH session reconstruction (real loopback capture)",
+    "case01_ssh_sessions": "Case 01 - SSH session reconstruction (real loopback capture)",
     "case02_web_sqli": "Case 02 - SQL injection and CSV exfiltration over HTTP",
     "case03_dns_tunnel": "Case 03 - dnscat2 DNS tunnelling (real loopback capture)",
     "case04_c2_beacon": "Case 04 - Periodic TLS beaconing on a non-standard port",
@@ -120,18 +120,31 @@ def dns_rate_panel(ax, case, t0, span):
     if d.empty:
         ax.set_title("DNS activity", fontsize=9, loc="left")
         return
-    ts = pd.to_numeric(d["ts"], errors="coerce")
-    names = d["query"].astype(str)
-    is_tunnel = names.str.startswith("dnscat.") | names.str.contains("exfil-lab.test", regex=False)
+    ts = pd.to_numeric(d["ts"], errors="coerce") - t0
     step = 10 if span <= 600 else 30
     edges = np.arange(0, span + step, step)
-    for mask, color, label in [(~is_tunnel.values, "#2f9e44", "ordinary DNS"),
-                               (is_tunnel.values, "#e03131", "dnscat2 / tunnel DNS")]:
-        counts, _ = np.histogram((ts[mask] - t0).dropna(), bins=edges)
-        ax.bar(edges[:-1], counts, width=step * 0.9, align="edge", color=color, label=label)
+    counts, _ = np.histogram(ts.dropna(), bins=edges)
+    ax.bar(edges[:-1], counts, width=step * 0.9, align="edge", color="#e03131",
+           label="dnscat2 queries")
+
+    # Measured polling-rate phases for this capture (seconds since first query).
+    phases = [
+        (0.0, 118.8, "1 session", "#1c7ed6"),
+        (118.8, 256.0, "2 sessions", "#f59f00"),
+        (256.0, span, "1 session", "#1c7ed6"),
+    ]
+    ytop = ax.get_ylim()[1]
+    for start, end, label, color in phases:
+        ax.axvspan(start, end, color=color, alpha=0.12, lw=0)
+        ax.text((start + end) / 2, ytop * 0.92, label, ha="center", va="top",
+                fontsize=8, color=color, fontweight="bold")
+    for boundary in (118.8, 256.0):
+        ax.axvline(boundary, color="#495057", ls="--", lw=1, alpha=0.8)
+
     ax.set_ylabel(f"DNS queries per {step} s", fontsize=8)
     ax.set_xlim(-step, span + step)
-    ax.set_title("DNS query-rate view (phase view: baseline vs tunnel)", fontsize=9, loc="left")
+    ax.set_title("DNS query-rate view (phase boundaries at 118.8 s and 256 s)",
+                 fontsize=9, loc="left")
     ax.legend(fontsize=7, loc="upper right")
     ax.grid(axis="x", alpha=0.25)
 
@@ -166,25 +179,22 @@ def bytes_panel(ax, conn, t0, span):
 
 
 def panel_case01(ax, case, conn, t0, span):
-    ssh = conn[conn["id.resp_p"] == 22]
-    scan = conn[(conn["orig_bytes"] == 0) & (conn["resp_bytes"] == 0) & (conn["duration"] < 1)]
-    burst = ssh[(ssh["duration"] < 5) & (ssh["orig_bytes"] > 0)]
-    longs = ssh[ssh["duration"] >= 5]
-    ax.scatter(ssh["ts"] - t0, np.ones(len(ssh)), marker="|", s=420, c="#e03131", linewidths=2,
-               label=f"TCP/22 connections (n={len(ssh)})")
-    if len(scan):
-        ax.axvspan((scan["ts"] - t0).min(), (scan["ts"] - t0).max() + 0.5,
-                   color="#f59f00", alpha=0.30, label=f"short/empty scan-like flows (n={len(scan)})")
-    if len(burst):
-        ax.axvspan((burst["ts"] - t0).min(), (burst["ts"] - t0).max() + 0.5,
-                   color="#e03131", alpha=0.18, label=f"short SSH sessions (n={len(burst)})")
-    for _, r in longs.iterrows():
-        ax.axvspan(float(r["ts"]) - t0, float(r["ts"]) - t0 + float(r["duration"]),
-                   color="#1c7ed6", alpha=0.20, label="long interactive session")
-    ax.set_yticks([])
-    ax.set_title(f"Connection-rate view: {len(scan)} scan-like / {len(burst)} short SSH / {len(longs)} long SSH",
-                 fontsize=9, loc="left")
-    ax.legend(fontsize=7, loc="upper right")
+    ssh = conn[conn["id.resp_p"] == 22].sort_values("ts")
+    if ssh.empty:
+        return
+    x = ssh["ts"] - t0
+    ax.scatter(x, np.ones(len(ssh)), marker="|", s=460, c="#e03131", linewidths=2,
+               label=f"connection starts (n={len(ssh)})", zorder=5)
+    for _, r in ssh.iterrows():
+        ax.annotate(f"port {int(r['id.orig_p'])}", (float(r["ts"]) - t0, 1),
+                    xytext=(0, 9), textcoords="offset points", ha="center",
+                    fontsize=7, color="#343a40")
+    ax.set_yticks([1])
+    ax.set_yticklabels(["SYN"])
+    ax.set_ylabel("connection starts", fontsize=8)
+    ax.set_ylim(0.55, 1.65)
+    ax.set_title(f"{len(ssh)} SSH sessions — connection starts", fontsize=9, loc="left")
+    ax.legend(fontsize=7, loc="lower right", frameon=True)
     ax.set_xlim(-span * 0.01, span * 1.01)
 
 
@@ -221,11 +231,19 @@ def panel_case03(ax, case, conn, t0, span):
         return
     d["qlen"] = d["query"].astype(str).str.len()
     tun = d["query"].astype(str).str.startswith("dnscat.") | d["query"].astype(str).str.contains("exfil-lab.test", regex=False)
-    ax.scatter(d.loc[~tun, "ts"] - t0, d.loc[~tun, "qlen"], c="#2f9e44", s=10, alpha=0.7, label="ordinary DNS")
-    ax.scatter(d.loc[tun, "ts"] - t0, d.loc[tun, "qlen"], c="#e03131", s=10, alpha=0.7, label="dnscat2 / tunnel DNS")
+    handles = []
+    n_ordinary = int((~tun).sum())
+    if n_ordinary:
+        handles.append(ax.scatter(d.loc[~tun, "ts"] - t0, d.loc[~tun, "qlen"],
+                                  c="#2f9e44", s=10, alpha=0.7, label="ordinary DNS"))
+    handles.append(ax.scatter(d.loc[tun, "ts"] - t0, d.loc[tun, "qlen"],
+                              c="#e03131", s=10, alpha=0.7, label="dnscat2 / tunnel DNS"))
     ax.set_ylabel("query name length (chars)", fontsize=8)
-    ax.set_title(f"DNS query length vs time ({int(tun.sum())} tunnel / {int((~tun).sum())} ordinary)", fontsize=9, loc="left")
-    ax.legend(fontsize=7, loc="upper left")
+    title = f"DNS query length vs time ({int(tun.sum())} tunnel"
+    if n_ordinary:
+        title += f" / {n_ordinary} ordinary"
+    ax.set_title(title + ")", fontsize=9, loc="left")
+    ax.legend(handles=handles, fontsize=7, loc="upper left")
     ax.set_xlim(-span * 0.01, span * 1.01)
 
 
@@ -246,7 +264,7 @@ def panel_case04(ax, case, conn, t0, span):
     ax.set_xlim(-span * 0.01, span * 1.01)
 
 
-PANELS = {"case01_ssh_bruteforce": panel_case01, "case02_web_sqli": panel_case02,
+PANELS = {"case01_ssh_sessions": panel_case01, "case02_web_sqli": panel_case02,
           "case03_dns_tunnel": panel_case03, "case04_c2_beacon": panel_case04}
 
 
