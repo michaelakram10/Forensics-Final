@@ -1,6 +1,6 @@
 # Appendix B — Hash manifest
 
-Generated with `sha256sum` on 2026-11-18T21:30:32Z. Sealed pcaps and their `.sha256` files are read-only; analysis outputs are writable.
+Generated with `sha256sum` on 2026-11-18T21:38:13Z. Sealed pcaps and their `.sha256` files are read-only; analysis outputs are writable.
 
 **Scope:** every file in the submission tree is listed except this manifest itself (a file cannot hash itself), Python bytecode caches (`__pycache__/`, `*.pyc`) and Git internals under `.git/`. Root Markdown files, `.gitignore`, case artifacts, supplementary material, custody records, reports, PDFs and scripts are all included. Private exercise material (`project.md`, `lab/`, `ground_truth/`) is excluded from this public tree.
 
@@ -250,6 +250,7 @@ a0285d476a34eb4f3f8ab37fa774e4730d3a915c6f6273459c0a0069ca7b6b4b  report/APPENDI
 82868c90be0392ba479bffe7243b2060645c8ed3c7575d5ecf0cf24bafbfd391  report/FINAL_REPORT.pdf
 72b7a863287b9067fcffda41bdd55ac631f45f0fd9394054fc90792b81b15a7d  report/PRESENTATION.md
 6c47be47a3b7eb50a1e4535dc6306517fd80ab6f71875e659a5db437e1615290  report/PRESENTATION.pdf
+20e879960eec46a22d79a7e0f3bf276cd177cda084f0e294b1935ded7004773d  report/TEST_RESULTS.md
 d451db4bb550371d25cbdff9db3ba70eaa6ce781eb4792745c2a76ae0f07b548  report/confidence_matrix.md
 47c45845a5d306ab01bd690f574ebaf23a2f389c342d47930d7bc6a8d7b5801d  report/data_provenance.md
 0505d696217939b66353875e613ac74a72072baf3fd982b7ec6ab56563b59543  report/excerpts_index.md
