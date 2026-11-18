@@ -1,6 +1,6 @@
 # Appendix B — Hash manifest
 
-Generated with `sha256sum` on 2026-11-18T20:01:19Z. Sealed pcaps and their `.sha256` files are read-only; analysis outputs are writable.
+Generated with `sha256sum` on 2026-11-18T20:08:18Z. Sealed pcaps and their `.sha256` files are read-only; analysis outputs are writable.
 
 **Scope:** every file in the submission tree is listed except this manifest itself (a file cannot hash itself), Python bytecode caches (`__pycache__/`, `*.pyc`) and Git internals under `.git/`. Root Markdown files, `.gitignore`, case artifacts, supplementary material, custody records, reports, PDFs and scripts are all included. Private exercise material (`project.md`, `lab/`, `ground_truth/`) is excluded from this public tree.
 
@@ -28,7 +28,7 @@ abae2a302e500366bc44591b232551852e2ec89abe74be5c0998a93d835dee27  cases/case01_s
 32fda8b4383f3e3b9b19bd8be67423158bbf97bd55f130aad8b97827cce2a9d8  cases/case01_ssh_sessions/tshark/stream_bytes_tshark.txt
 ce14f37c4d17ec9317e73fe857d8646c344d50f9083ce658a49de2534dcfa1a7  cases/case01_ssh_sessions/tshark/stream_bytes_zeek.txt
 2c2d43dfd0677554f9cd8b0ce682f0844b7b1f769c322f88ef337b549f304d4b  cases/case01_ssh_sessions/tshark/tcp_flags.txt
-0f95242a8271bc4c7ad9216e429413ba0dc6368be9938860105f1ce017df51e8  cases/case01_ssh_sessions/viz/case01_ssh_sessions_timeline.png
+c253fef900c30a745f2136f959c521fd7a8520c5c82fae17b834a3277397d024  cases/case01_ssh_sessions/viz/case01_ssh_sessions_timeline.png
 1cf1908dbb14dbe8b606c740ecb5915bacd1a58f30b6f092dceeac62246d17c1  cases/case01_ssh_sessions/zeek/json/capture_loss.log
 1899bb1ed8cd1dafe57226548e08f17445744d8c2c29191ed965ac646eb89c77  cases/case01_ssh_sessions/zeek/json/conn.log
 068ef6bda634057d90d51a9bb6a5ba9cfc24df8a3d6d30a4e9b97b0d22e1ad3b  cases/case01_ssh_sessions/zeek/json/known_hosts.log
@@ -201,7 +201,7 @@ a845736f3348e0e7d94e32cb1b22e4c4ede6254cc5dedf3aa0406fccd6eb4fa7  cases/case04_c
 87116072cac0fa91d89f978cbcb52d75bfaeb15ba607ad444836a250c64414ac  custody/custody_log.csv
 a0285d476a34eb4f3f8ab37fa774e4730d3a915c6f6273459c0a0069ca7b6b4b  report/APPENDIX_A_raw_evidence.md
 4782904e3901d95f8ad06d42ef2a6e623c3932563e760b717ff088b94b5eb7d6  report/FINAL_REPORT.md
-129678c20bef5142bd46db3b8c1ce23b2d9cd70b6e807bd703625531bd69a7f8  report/FINAL_REPORT.pdf
+9866a615be38b515eabed5ea27f7b0476806ce4ccdee860f3128ae464a6b4e2d  report/FINAL_REPORT.pdf
 fc3976f519719a352387dd4405c0bf0a73cd0132ceec5737c1d67c03479a6758  report/PRESENTATION.md
 1ffac0059fe77be4adf466441bdbd3c47c584948f2b65f926d1f5931c1f46b5d  report/PRESENTATION.pdf
 5f34b4bdde264897226e183da05ff8f9182ef69faed2fbb5c2b21f543fa7d062  report/confidence_matrix.md
@@ -290,7 +290,7 @@ f8e70544b581057bc25e5f5864261960e251b9b7a41bba8356b1627483236b1e  tools/decode_d
 44c2aedd34c90fae40f03495f758dd3a245ec15232fe50b7447a3c0514354300  tools/dns_stats.py
 fac94c9f1c9da3f0bd11aeba924d58e5170f64e0e7f7b3ebe8498eef61ecdd83  tools/export_flows.py
 a3fa51e3a67f1c3adb8ab066c7ca18da3e470c506bd821bd1417bfab061a9890  tools/export_pdf.py
-59f133667597350cb7dc99377cb75286e9ad3d05f4de8f21c9e0300c29cd6e42  tools/generate_timelines.py
+07be7aa5abe116d8aa24d63b501b7a7d29d13caa82a910a95a804386c85742e7  tools/generate_timelines.py
 794cacba0ad0f3ec3ebb30d257a05dc0b3138bedc36fd6cd393576ba37d910cb  tools/make_appendix.py
 480ea3b17684b69b5ec4543e9c8b6200ddd2af8373bd76a63b517ee9df9c705a  tools/make_excerpts.py
 27fa4553d900ac2e5a6b2b72c476a1baa38a6db603af1280c9f7ad631eeb130d  tools/run_zeek.sh

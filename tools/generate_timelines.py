@@ -19,6 +19,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 from matplotlib.ticker import FuncFormatter
 
@@ -185,16 +186,22 @@ def panel_case01(ax, case, conn, t0, span):
     x = ssh["ts"] - t0
     ax.scatter(x, np.ones(len(ssh)), marker="|", s=460, c="#e03131", linewidths=2,
                label=f"connection starts (n={len(ssh)})", zorder=5)
-    for _, r in ssh.iterrows():
+    # stagger labels vertically so neighbouring starts cannot overlap
+    for i, (_, r) in enumerate(ssh.iterrows()):
         ax.annotate(f"port {int(r['id.orig_p'])}", (float(r["ts"]) - t0, 1),
-                    xytext=(0, 9), textcoords="offset points", ha="center",
+                    xytext=(4 if i == 0 else 0, 9 + 14 * (i % 2)),
+                    textcoords="offset points",
+                    ha="left" if i == 0 else "center",
                     fontsize=7, color="#343a40")
     ax.set_yticks([1])
     ax.set_yticklabels(["SYN"])
     ax.set_ylabel("connection starts", fontsize=8)
-    ax.set_ylim(0.55, 1.65)
+    ax.set_ylim(0.55, 1.85)
     ax.set_title(f"{len(ssh)} SSH sessions — connection starts", fontsize=9, loc="left")
-    ax.legend(fontsize=7, loc="lower right", frameon=True)
+    handle = Line2D([0], [0], marker="|", color="#e03131", linestyle="None",
+                    markersize=12, markeredgewidth=2,
+                    label=f"connection starts (n={len(ssh)})")
+    ax.legend(handles=[handle], fontsize=7, loc="lower right", frameon=True)
     ax.set_xlim(-span * 0.01, span * 1.01)
 
 
