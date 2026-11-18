@@ -1,6 +1,6 @@
 # Appendix B — Hash manifest
 
-Generated with `sha256sum` on 2026-11-18T21:38:13Z. Sealed pcaps and their `.sha256` files are read-only; analysis outputs are writable.
+Generated with `sha256sum` on 2026-11-18T21:41:51Z. Sealed pcaps and their `.sha256` files are read-only; analysis outputs are writable.
 
 **Scope:** every file in the submission tree is listed except this manifest itself (a file cannot hash itself), Python bytecode caches (`__pycache__/`, `*.pyc`) and Git internals under `.git/`. Root Markdown files, `.gitignore`, case artifacts, supplementary material, custody records, reports, PDFs and scripts are all included. Private exercise material (`project.md`, `lab/`, `ground_truth/`) is excluded from this public tree.
 
@@ -239,15 +239,15 @@ f9780c2163870c71a02da786a80914f0d4d4c99b83c57b593dd5b6e52e8d9c4a  cases/case04_c
 a845736f3348e0e7d94e32cb1b22e4c4ede6254cc5dedf3aa0406fccd6eb4fa7  cases/case04_c2_beacon/zeek/tsv/stats.log
 7e9cd266a950a352c93338c0402c4efacd5b1633349af24415361bd0cdc0f81a  cases/case04_c2_beacon/zeek/zeek_version.txt
 145066a6fc962acf9510005d7234818673795fcb2b4d58ba076c2ff1235a81dc  custody/README.md
-2669ecf2066279bc8525f6a1b43ecbb3be9f52718053d51659c51fe6473c68ad  custody/custody_log.csv
+74b60a2197d079994d10a3627c1837109613fba94a978e36347fee01348d9b33  custody/custody_log.csv
 6e4eb0cafb6fb4235aa6a34a1035ab2bab064943198ca8b4de10ef1548305d79  docs/BLIND_CHECK_TEMPLATE.md
 00f3edf9d3165a51e82aee4babc92f3c7323e5ea5fdf6432a102a1551360a2fe  docs/HUMAN_ONLY_HANDOVER.md
 f29080acd9be70fa85d46b48cb4318d00ffd37e9cf940be2fa172a3af669ad4e  docs/NEW_CASE_PIPELINE.md
 a94b7e0ac6aa38cfa02529c01f4750500bcd80b9998e9a12cc9db65ca1a93495  docs/PRESENTATION_CHART_CHECK.md
 6a3704dacc4e77c4307dd83eddb8a758a1a010eb9bc281d8ca09b7ff17c422eb  docs/TWO_HOST_CAPTURE_RUNBOOK.md
 a0285d476a34eb4f3f8ab37fa774e4730d3a915c6f6273459c0a0069ca7b6b4b  report/APPENDIX_A_raw_evidence.md
-3622583d6da5a8941b214535ec3b33c61ef4d62667be2afbe8fc4acf91b72303  report/FINAL_REPORT.md
-82868c90be0392ba479bffe7243b2060645c8ed3c7575d5ecf0cf24bafbfd391  report/FINAL_REPORT.pdf
+677f80e2ced17493e994b9ee81a772cfdcfad5abce42d7ef73ca1ff9628b19f5  report/FINAL_REPORT.md
+04bf2513f14839371fb44534f47916f3462b163eedbefed3a4718b3d738f0c65  report/FINAL_REPORT.pdf
 72b7a863287b9067fcffda41bdd55ac631f45f0fd9394054fc90792b81b15a7d  report/PRESENTATION.md
 6c47be47a3b7eb50a1e4535dc6306517fd80ab6f71875e659a5db437e1615290  report/PRESENTATION.pdf
 20e879960eec46a22d79a7e0f3bf276cd177cda084f0e294b1935ded7004773d  report/TEST_RESULTS.md
@@ -337,7 +337,7 @@ bc9990c9f3a5122a0149d007a17f0e433b126c54977d7ee4311b1e68fad67e6b  tools/beacon_s
 2b4783e8eb849acd1e70859192e5b30f65fc3abe5970822554906cd802e8f930  tools/custody.sh
 f8e70544b581057bc25e5f5864261960e251b9b7a41bba8356b1627483236b1e  tools/decode_dns_tunnel.py
 44c2aedd34c90fae40f03495f758dd3a245ec15232fe50b7447a3c0514354300  tools/dns_stats.py
-fac94c9f1c9da3f0bd11aeba924d58e5170f64e0e7f7b3ebe8498eef61ecdd83  tools/export_flows.py
+1fea0e854ff6d3a9509eec034092bc36f45a8083506a7db69d085741cac957c7  tools/export_flows.py
 a3fa51e3a67f1c3adb8ab066c7ca18da3e470c506bd821bd1417bfab061a9890  tools/export_pdf.py
 07be7aa5abe116d8aa24d63b501b7a7d29d13caa82a910a95a804386c85742e7  tools/generate_timelines.py
 794cacba0ad0f3ec3ebb30d257a05dc0b3138bedc36fd6cd393576ba37d910cb  tools/make_appendix.py

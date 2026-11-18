@@ -517,7 +517,7 @@ excerpts, flow CSVs and the appendix, are listed. Scope is stated in the manifes
 
 ## Appendix C — Chain of Custody
 
-`custody/custody_log.csv` (17 entries; `notes` column marks superseded
+`custody/custody_log.csv` (18 entries; `notes` column marks superseded
 synthetic captures and records public-safe acquisition details):
 
 ```csv
@@ -539,6 +539,7 @@ utc_time,user,host,case,action,pcap_sha256,notes
 2026-11-18T20:30:48Z,kali,kali,all,"documentation update per repo_gap_analysis.md",n/a,"embedded rated findings; reworded case01 burst references; expanded case02/04 reports; no pcap changed"
 2026-11-18T21:07:51Z,kali,kali,all,"second-review documentation update (A1-A4, A6): corrected verify_counts.py path; added blind-check, two-host and new-case templates; recorded failed independent-flow install; added Case 01 operator context; custody attribution note",n/a,"documentation-only custody entry; manual-guided not blind; no pcap or raw evidence changed"
 2026-11-18T21:21:41Z,kali,kali,all,"independent nfdump/nfpcapd flow export from sealed pcaps",n/a,"new cases/*/netflow/ exporter records and report/netflow_reconciliation.md; sealed pcaps read-only; manual-guided not blind"
+2026-11-18T21:41:34Z,kali,kali,all,"fixed tools/export_flows.py regeneration of flow reconciliation and case flow READMEs",n/a,"script now writes the committed nfdump wording; regenerated files byte-identical in disposable copy; no raw, supplementary, Zeek, tshark, tcpdump or netflow output changed; manual-guided not blind"
 ```
 
 The original synthetic Case 01/03 entries are explicitly marked superseded by the
