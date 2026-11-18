@@ -1,0 +1,8 @@
+# tshark: tcp.stream; client = source port != 22; orig_bytes = sum(tcp.len) client->server; resp_bytes = sum(tcp.len) server->client; *_ip_bytes = sum(frame.len - 14).
+| stream/uid | client_port | orig_pkts | orig_bytes | resp_pkts | resp_bytes | orig_ip_bytes | resp_ip_bytes | first_utc (SYN) | last_utc (final ACK / server FIN) |
+|---|---|---|---|---|---|---|---|---|---|
+| 0 | 34416 | 13 | 1227 | 12 | 1741 | 1911 | 2373 | 2026-11-16T16:20:54.608130000Z (f1) | 2026-11-16T16:20:54.728956000Z (f25) |
+| 1 | 34430 | 18 | 1679 | 24 | 2077 | 2623 | 3333 | 2026-11-16T16:20:54.939960000Z (f26) | 2026-11-16T16:21:14.798787000Z (f72) |
+| 2 | 54844 | 17 | 1603 | 23 | 1977 | 2495 | 3181 | 2026-11-16T16:21:14.796806000Z (f66) | 2026-11-16T16:21:28.993265000Z (f107) |
+
+Total: orig_pkts 48, orig_bytes 4509, resp_pkts 59, resp_bytes 5795, orig_ip_bytes 6709, resp_ip_bytes 9207; all IP bytes 15916; all frame bytes 17414.

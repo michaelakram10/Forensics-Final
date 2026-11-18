@@ -1,0 +1,15 @@
+timestamp_utc,source,destination,event,evidence_ref
+2026-11-04T14:00:00.000+00:00,192.168.56.40,203.0.113.50,"Periodic connections to 203.0.113.50:8443 begin (n=22, median interval 56.6s, MAD 3.5s)",conn.log uid=CdV56y1Jj5T9xaZRui
+2026-11-04T14:01:00.012+00:00,192.168.56.40,198.51.100.20,"Periodic connections to 198.51.100.20:443 begin (n=6, median interval 465.6s, MAD 20.7s)",conn.log uid=CfI58m13zCmEGw7Bk9
+2026-11-04T14:06:59.317+00:00,203.0.113.50,192.168.56.40,Largest download in group: 4219 B,conn.log uid=C5gqpz4Aa2kXNo4dOh
+2026-11-04T14:07:05.317+00:00,192.168.56.40,203.0.113.50,Largest upload in group: 2302 B,conn.log uid=CZcCOt32SubuNDwVKb
+2026-11-04T14:08:27.849+00:00,192.168.56.40,198.51.100.20,Largest upload in group: 981 B,conn.log uid=CEqWla2Lf8XswUXSpi
+2026-11-04T14:19:20.508+00:00,192.168.56.40,203.0.113.50,Unanswered connection attempt (S0),conn.log uid=Ck89e7W7UPPRw8Ysg
+2026-11-04T14:20:15.456+00:00,192.168.56.40,203.0.113.50,Last periodic connection to 203.0.113.50:8443,conn.log uid=Cz2UNp1sLKGWIIdHA9
+2026-11-04T14:20:15.456+00:00,192.168.56.40,203.0.113.50,Unanswered connection attempt (S0),conn.log uid=Cz2UNp1sLKGWIIdHA9
+2026-11-04T14:21:04.997+00:00,192.168.56.40,203.0.113.51,"Periodic connections to 203.0.113.51:8443 begin (n=24, median interval 57.1s, MAD 2.4s)",conn.log uid=CM7JGD2eItvzXA2eNf
+2026-11-04T14:21:04.997+00:00,203.0.113.51,192.168.56.40,Largest download in group: 227 B,conn.log uid=CM7JGD2eItvzXA2eNf
+2026-11-04T14:31:37.763+00:00,192.168.56.40,203.0.113.51,Largest upload in group: 86263 B,conn.log uid=CFT1n63MPYbNI0Whnl
+2026-11-04T14:35:05.067+00:00,198.51.100.20,192.168.56.40,Largest download in group: 149555 B,conn.log uid=CbLT901ANVTfCYeqj9
+2026-11-04T14:43:10.951+00:00,192.168.56.40,203.0.113.51,Last periodic connection to 203.0.113.51:8443,conn.log uid=CUay7R2A7Ksx0nhEDc
+2026-11-04T14:43:11.364+00:00,192.168.56.40,198.51.100.20,Last periodic connection to 198.51.100.20:443,conn.log uid=CBiDz02H2OjCR6O9J3

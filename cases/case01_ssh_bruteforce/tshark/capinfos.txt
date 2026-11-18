@@ -1,0 +1,26 @@
+File name:           case01.pcap
+File type:           Wireshark/tcpdump/... - pcap
+File encapsulation:  Ethernet
+File timestamp precision:  microseconds (6)
+Packet size limit:   file hdr: 262144 bytes
+Number of packets:   107
+File size:           19 kB
+Data size:           17 kB
+Capture duration:    34.385135 seconds
+Earliest packet time: 2026-11-16 16:20:54.608130
+Latest packet time:   2026-11-16 16:21:28.993265
+Data byte rate:      506 bytes/s
+Data bit rate:       4,051 bits/s
+Average packet size: 162.75 bytes
+Average packet rate: 3 packets/s
+SHA256:              771e90d78db4d11cfda58d345b490f612986c06c4e72627252f2c916de280c99
+SHA1:                cc36230db2495436e276617aa74d7b35bf956250
+Strict time order:   True
+Number of interfaces in file: 1
+Interface #0 info:
+                     Encapsulation = Ethernet (1 - ether)
+                     Capture length = 262144
+                     Time precision = microseconds (6)
+                     Time ticks per second = 1000000
+                     Number of stat entries = 0
+                     Number of packets = 107

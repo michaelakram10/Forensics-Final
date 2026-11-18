@@ -1,0 +1,8 @@
+# Cross-tool comparison (tshark tcp.stream vs Zeek conn.log uid), numeric columns only.
+| stream/uid | orig_pkts | orig_bytes | resp_pkts | resp_bytes | orig_ip_bytes | resp_ip_bytes | status |
+|---|---:|---:|---:|---:|---:|---:|---|
+| 0 / CF3dQ73otQFUMGzMMi | 13/13 | 1227/1227 | 12/12 | 1741/1741 | 1911/1911 | 2373/2373 | MATCH |
+| 1 / CPbK9Z6ezH8vbIQn1 | 18/18 | 1679/1679 | 24/24 | 2077/2077 | 2623/2623 | 3333/3333 | MATCH |
+| 2 / CIkYPK3CLHxdbW23vh | 17/17 | 1603/1603 | 23/23 | 1977/1977 | 2495/2495 | 3181/3181 | MATCH |
+
+Conclusion: all 18 per-stream counters match exactly (tshark/Zeek).

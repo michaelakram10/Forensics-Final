@@ -1,0 +1,2 @@
+{"ts":1794846054.60828,"host":"127.0.0.1","software_type":"SSH::CLIENT","name":"libssh","version.major":0,"version.minor":12,"version.minor2":2,"unparsed_version":"libssh_0.12.2"}
+{"ts":1794846054.624584,"host":"127.0.0.1","host_p":22,"software_type":"SSH::SERVER","name":"OpenSSH","version.major":10,"version.minor":6,"version.addl":"p1","unparsed_version":"OpenSSH_10.6p1 Debian-1"}

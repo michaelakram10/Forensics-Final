@@ -1,0 +1,66 @@
+Case 03 DNS statistics (tshark 4.6.9, export TZ=UTC)
+Source: raw/case03.pcap  SHA256 e06cac58e6204357992523b8b75f8c22503c7a82e313f00697c2bf74f7ed44eb
+All times below are UTC. Zeek 9.0.1 used as the second tool (see report/verification.md).
+
+== Packet / flow counts ==
+frames (total)                         890
+DNS queries (dns.flags.response==0)     445
+DNS responses (dns.flags.response==1)   445
+flow tuples (udp.stream)                1   (value 0)
+5-tuple                                 127.0.0.1:44651 -> 127.0.0.1:53 (UDP)
+Zeek conn.log uid                       Chubce1wik6p4KDZeg
+
+== Time ==
+first frame epoch                       1795026325.008145  = 2026-11-18 18:25:25.008145 UTC
+last  frame epoch                       1795026623.514718  = 2026-11-18 18:30:23.514718 UTC
+duration (capinfos)                     298.506573 s
+first query epoch                       1795026325.008145
+last  query epoch                       1795026623.513247
+first response epoch                    1795026325.144919
+last  response epoch                    1795026623.514718
+query inter-arrival: mean 0.672309 s, median 0.554135 s, min 0.001798 s, max 1.044401 s
+intervals in 0.9-1.1 s                  160 of 444  (strong ~1 s cadence component)
+
+== Record type (qtype) distribution, queries only ==
+ 5  CNAME    164   (36.9%)
+15  MX       150   (33.7%)
+16  TXT      131   (29.4%)
+Distinct qtype transitions across the 445-query sequence: 274
+  => qtypes are MIXED / pseudo-randomly rotated, not a fixed A/AAAA cycle.
+All responses rcode=NOERROR, qclass=C_INTERNET (445/445).
+
+== Query-name statistics ==
+full query names (unique)               445 / 445  (every name unique)
+name length (characters):
+  min 41, max 240, mean 43.398, median 41
+  names >=200 chars: 2  (both exactly 240)
+  longest: frames 281 and 283, epoch ~1795026451.49-51.54, both 240 chars
+First-label hex decoded frame bytes (report/decode_dnscat2.py):
+  min 17, max 115, mean 18.18, median 17
+Shannon entropy over query-name characters:
+  mean 3.967 bits/char, min 3.607, max 4.162  (near-uniform hex alphabet, 16 symbols)
+
+== dnscat2 structural extraction (BASIC; NOT decryption) ==
+hex chars concatenated from labels after "dnscat."   16180
+extracted hex BYTES from query names                 8090   (0 odd-length frames)
+extracted hex BYTES from response answers            8067
+non-hex labels after "dnscat."                       0
+first-label byte[2] (candidate message type): 0x01 x439, 0x03 x4, 0x00 x2
+first-label bytes[3:5] (candidate session id):
+  0xbb73 (47987) x263, frames 1-803
+  0x9658 (38488) x182, frames 241-889
+  => two distinct session IDs overlap across frames 241-803 (two concurrent logical channels)
+dnscat2 encrypts tunnel data with a per-shared-secret cipher; the key is not in
+the pcap, so payload CONTENT is not recoverable. Only framing/structure, record
+type choice, sizing, timing and the dnscat2 signature are observable.
+
+== Zeek RTT (loopback, for reference) ==
+min 0.000426 s, median 0.001047 s, mean 0.001983 s, max 0.150140 s
+
+== Baseline comparison ==
+No legitimate DNS baseline exists inside this single-flow isolated loopback
+capture, and no external baseline pcap was supplied.  The distribution above
+(long hex-only labels under a fixed "dnscat." prefix, three unusual qtypes,
+100% unique names, near-uniform entropy) is compared qualitatively against a
+normal enterprise DNS profile (mostly A/AAAA, short human-readable names,
+repeated names, low label entropy).  No numeric baseline delta is claimed.

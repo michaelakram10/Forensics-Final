@@ -1,0 +1,22 @@
+# TCP flag checks (tshark 4.6 booleans are True/False; filters use ==True / ==False)
+
+SYN set (tcp.flags.syn==True):
+1	0	127.0.0.1	34416	127.0.0.1	22
+2	0	127.0.0.1	22	127.0.0.1	34416
+26	1	127.0.0.1	34430	127.0.0.1	22
+27	1	127.0.0.1	22	127.0.0.1	34430
+66	2	127.0.0.1	54844	127.0.0.1	22
+67	2	127.0.0.1	22	127.0.0.1	54844
+SYN/ACK (tcp.flags.syn==True && tcp.flags.ack==True):
+2	0
+27	1
+67	2
+FIN set (tcp.flags.fin==True):
+23	0
+24	0
+65	1
+71	1
+104	2
+106	2
+RST set (tcp.flags.reset==True):
+Counts: SYN=6 SYN_ACK=3 FIN=6 RST=0

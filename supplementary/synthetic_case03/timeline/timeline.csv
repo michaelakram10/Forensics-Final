@@ -1,0 +1,5 @@
+timestamp_utc,source,destination,event,evidence_ref
+2026-11-05T10:00:19.899+00:00,192.168.56.40,192.168.56.53,"Ordinary DNS for corp.test: 22 queries, 4 unique",dns.log uid=CdGqui3exPLUPUZ5E8
+2026-11-05T10:01:34.708+00:00,192.168.56.40,192.168.56.53,"Ordinary DNS for example.test: 18 queries, 6 unique",dns.log uid=CTZ3o42MT02WWVRKsg
+2026-11-05T10:10:00.000+00:00,192.168.56.40,192.168.56.53,Tunnel-like DNS activity to exfil-lab.test begins (first query init.t.exfil-lab.test),dns.log uid=CnU3womk9DkrmjZZf
+2026-11-05T10:10:47.848+00:00,192.168.56.40,192.168.56.53,"Tunnel-like DNS activity ends: 202 queries, 202 unique, mean length 135",dns.log uid=CBQBYV3I9RKMMOBBka

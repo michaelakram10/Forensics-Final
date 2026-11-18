@@ -1,0 +1,13 @@
+timestamp_utc,source,destination,event,evidence_ref
+2026-11-16T16:20:54.608130Z,127.0.0.1:34416,127.0.0.1:22,Short SSH session SYN; three-way handshake completes by .608180Z,conn.log uid CF3dQ73otQFUMGzMMi / f1
+2026-11-16T16:20:54.608280Z,127.0.0.1:34416,127.0.0.1:22,Client banner SSH-2.0-libssh_0.12.2 (23 B),ssh.log uid CF3dQ73otQFUMGzMMi / f4
+2026-11-16T16:20:54.624584Z,127.0.0.1:22,127.0.0.1:34416,Server banner SSH-2.0-OpenSSH_10.6p1 Debian-1 (33 B),ssh.log uid CF3dQ73otQFUMGzMMi / f6
+2026-11-16T16:20:54.723511Z,127.0.0.1:34416,127.0.0.1:22,"Short session client FIN after one 44/44 and 52/84 B encrypted exchange; Zeek auth_attempts=0 and auth_success unset",conn.log uid CF3dQ73otQFUMGzMMi / f23
+2026-11-16T16:20:54.939960Z,127.0.0.1:34430,127.0.0.1:22,Long SSH session A SYN; starts 0.331830 s after the first SYN,conn.log uid CPbK9Z6ezH8vbIQn1 / f26
+2026-11-16T16:20:54.940122Z,127.0.0.1:34430,127.0.0.1:22,"Long A client banner libssh_0.12.2 at .940122Z and OpenSSH_10.6p1 banner at .961098Z; same algorithms and host key as short session","ssh.log uid CPbK9Z6ezH8vbIQn1 / f29,f31"
+2026-11-16T16:20:55.059953Z,127.0.0.1:22,127.0.0.1:34430,"First of six 52-to-84 B encrypted request/reply pairs in long A (later gaps 3.948288/1.973942/3.946285/3.946089/1.974138 s)","f46,f47"
+2026-11-16T16:21:14.795393Z,127.0.0.1:22,127.0.0.1:34430,"Long A final 76 B encrypted packet; client FIN .796157Z, server FIN .798748Z; Zeek auth_success=F auth_attempts=5","conn.log uid CPbK9Z6ezH8vbIQn1 / f64,f71"
+2026-11-16T16:21:14.796806Z,127.0.0.1:54844,127.0.0.1:22,"Long SSH session B SYN, 0.649 ms after long A client FIN and 1.942 ms before long A server FIN",conn.log uid CIkYPK3CLHxdbW23vh / f66
+2026-11-16T16:21:14.796943Z,127.0.0.1:54844,127.0.0.1:22,"Long B client banner libssh_0.12.2 at .796943Z and OpenSSH_10.6p1 banner at .818663Z; first 52/84 B pair at .912492Z","ssh.log uid CIkYPK3CLHxdbW23vh / f69,f73,f88"
+2026-11-16T16:21:28.726199Z,127.0.0.1:54844,127.0.0.1:22,Long B final 92 B encrypted client packet followed by 28 B server reply at .791354Z,"f101,f103"
+2026-11-16T16:21:28.993265Z,127.0.0.1:54844,127.0.0.1:22,"Long B final ACK closes the capture; Zeek auth_success=T auth_attempts=5; total duration 14.196392 s","conn.log uid CIkYPK3CLHxdbW23vh / f107"

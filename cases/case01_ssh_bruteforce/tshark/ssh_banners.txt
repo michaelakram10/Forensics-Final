@@ -1,0 +1,21 @@
+# SSH protocol banners (src -> banner), observed counts
+# Command: tshark -r case01.pcap -Y 'ssh.protocol' -T fields -e frame.time_epoch -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e ssh.protocol
+
+1794846054.608280000	127.0.0.1	34416	127.0.0.1	22	SSH-2.0-libssh_0.12.2
+1794846054.624584000	127.0.0.1	22	127.0.0.1	34416	SSH-2.0-OpenSSH_10.6p1 Debian-1
+1794846054.940122000	127.0.0.1	34430	127.0.0.1	22	SSH-2.0-libssh_0.12.2
+1794846054.961098000	127.0.0.1	22	127.0.0.1	34430	SSH-2.0-OpenSSH_10.6p1 Debian-1
+1794846074.796943000	127.0.0.1	54844	127.0.0.1	22	SSH-2.0-libssh_0.12.2
+1794846074.818663000	127.0.0.1	22	127.0.0.1	54844	SSH-2.0-OpenSSH_10.6p1 Debian-1
+
+# Count by src/dst/banner
+      1 127.0.0.1	22	127.0.0.1	34416	SSH-2.0-OpenSSH_10.6p1 Debian-1
+      1 127.0.0.1	22	127.0.0.1	34430	SSH-2.0-OpenSSH_10.6p1 Debian-1
+      1 127.0.0.1	22	127.0.0.1	54844	SSH-2.0-OpenSSH_10.6p1 Debian-1
+      1 127.0.0.1	34416	127.0.0.1	22	SSH-2.0-libssh_0.12.2
+      1 127.0.0.1	34430	127.0.0.1	22	SSH-2.0-libssh_0.12.2
+      1 127.0.0.1	54844	127.0.0.1	22	SSH-2.0-libssh_0.12.2
+
+# Count by banner only
+      3 SSH-2.0-libssh_0.12.2
+      3 SSH-2.0-OpenSSH_10.6p1 Debian-1

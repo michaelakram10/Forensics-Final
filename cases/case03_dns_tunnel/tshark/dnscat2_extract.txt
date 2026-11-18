@@ -1,0 +1,45 @@
+=== dnscat2 BASIC structural extraction (NOT decryption) ===
+pcap: raw/case03.pcap
+DNS queries parsed: 445
+queries with a non-hex label after 'dnscat.': 0
+total hex characters in concatenated labels: 16180
+total extracted hex BYTES (floor(chars/2)): 8090
+  (odd-length frames: 0)
+per-query frame bytes: min=17 max=115 mean=18.18 median=17
+
+=== first-label byte offsets (most common value per offset) ===
+frames shorter than 8 bytes: 0
+  byte[ 0] distinct=205  top: 0x1d(6), 0x4d(6), 0xb0(6), 0xde(5)
+  byte[ 1] distinct=214  top: 0x92(6), 0xfe(6), 0x1d(6), 0xb4(5)
+  byte[ 2] distinct=  3  top: 0x01(439), 0x03(4), 0x00(2)
+  byte[ 3] distinct=  2  top: 0xbb(263), 0x96(182)
+  byte[ 4] distinct=  2  top: 0x73(263), 0x58(182)
+  byte[ 5] distinct=208  top: 0x41(5), 0xc9(5), 0xe1(5), 0xf3(5)
+  byte[ 6] distinct=209  top: 0x0d(7), 0xf8(7), 0x26(6), 0xe1(5)
+  byte[ 7] distinct=209  top: 0x01(7), 0xdd(7), 0x0f(6), 0xd4(6)
+  byte[ 8] distinct=215  top: 0x16(6), 0x14(6), 0xd6(5), 0x47(5)
+  byte[ 9] distinct=210  top: 0x82(5), 0xee(5), 0x88(5), 0x73(5)
+  byte[10] distinct=202  top: 0xfa(6), 0x06(6), 0xbd(6), 0xfc(5)
+  byte[11] distinct=  4  top: 0x00(437), 0x01(6), 0x76(1), 0x7b(1)
+
+=== fixed 2-byte field at bytes[3:5] of first label ===
+  0xbb73 (47987): 263 queries
+  0x9658 (38488): 182 queries
+
+=== byte[2] (candidate message-type) frequency ===
+  0x01: 439 queries
+  0x03: 4 queries
+  0x00: 2 queries
+  => bytes[0:2] vary per query (nonce/id); byte[2] is almost always 0x01;
+     bytes[3:5] take only two values -> possible 2 active dnscat2 sessions.
+
+=== largest 6 query frames (frame, epoch, type, bytes, name[:70]) ===
+  frame 281 epoch 1795026451.488949 qtype=15 bytes=115  dnscat.827701bb73cf055c7f6b700082f7408497833f2a3858d9a8f1c1b9bd838e.a3
+  frame 283 epoch 1795026451.540294 qtype=15 bytes=115  dnscat.cc5b01bb737b04a2880bef0083d4b705acaf72a6a7bb59bfd3f4b7841af0.fd
+  frame 285 epoch 1795026451.591623 qtype= 5 bytes= 86  dnscat.846301bb7331360668e417008404997bf43d8002d4d57aff07805a5eb690.a4
+  frame   1 epoch 1795026325.008145 qtype=16 bytes= 73  dnscat.87ff03bb73000000005fa2769a17431349604b950c74cf27751cb25e3987.b8
+  frame 241 epoch 1795026443.820768 qtype=15 bytes= 73  dnscat.215303965800000000f87e7b6f99f293f0274bf81cc0e4e0d3242583c3a4.21
+  frame 515 epoch 1795026508.646168 qtype=15 bytes= 66  dnscat.fb880196581168152bb0780041ff9e0bed7b9df1d9142ad9d1c2b4b50819.cc
+
+NOTE: dnscat2 encrypts tunneled payload data; only framing/structure,
+record-type selection and sizing are observable. No plaintext is claimed.

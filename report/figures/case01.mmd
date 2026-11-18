@@ -1,0 +1,25 @@
+sequenceDiagram
+    autonumber
+    participant C as Client 127.0.0.1 (ephemeral)
+    participant S as SSH service 127.0.0.1:22
+    Note over C,S: 2026-11-16 16:20:54.608Z — REAL loopback lab capture, 107 packets
+    Note over C,S: Caption: three SSH sessions on loopback; encrypted SSH content is not depicted.
+    C->>S: stream 34416: SYN at 16:20:54.608130Z
+    S-->>C: SYN/ACK; plaintext banners libssh_0.12.2 / OpenSSH_10.6p1 Debian-1
+    C->>S: one encrypted exchange, then client FIN at 16:20:54.723Z (0.120797 s)
+    Note over C,S: Zeek auth_attempts=0, auth_success unset
+    C->>S: stream 34430: SYN at 16:20:54.939960Z, identical banners/algorithms/host key
+    loop 52 -> 84 B encrypted pairs at 16:20:55.060 .. 16:21:10.849Z (gaps 1.97-3.95 s)
+        C->>S: encrypted authentication-like attempt
+        S-->>C: encrypted reply
+    end
+    Note over C,S: Zeek auth_attempts=5, auth_success=F; final 76 B server packet then FINs at 16:21:14.798Z
+    C->>S: stream 54844: SYN at 16:21:14.796806Z (during stream 34430 teardown)
+    loop 52 -> 84 B encrypted pairs at 16:21:14.912 .. 16:21:24.780Z
+        C->>S: encrypted authentication-like attempt
+        S-->>C: encrypted reply
+    end
+    Note over C,S: Zeek auth_attempts=5, auth_success=T; final 92 B client / 28 B server exchange
+    S-->>C: orderly FINs at 16:21:28.993Z — capture ends
+    Note over C,S: No port scan, no RSTs, no non-22 destination, no 36-attempt burst.
+    Note over C,S: No credentials, commands, tool identity or host effects recoverable (encrypted payload).

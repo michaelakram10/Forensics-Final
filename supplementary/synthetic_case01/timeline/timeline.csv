@@ -1,0 +1,7 @@
+timestamp_utc,source,destination,event,evidence_ref
+2026-11-02T09:00:00.000+00:00,192.168.56.10,192.168.56.20,Port scan begins: 13 ports probed from source port(s) [51234],conn.log uid=CNwDExWxxjJWEYX36
+2026-11-02T09:00:00.599+00:00,192.168.56.20,192.168.56.10,"Scan ends; answered (open) ports: [22, 80]",conn.log uid=CgOwCB45EuBZsO13Ul
+2026-11-02T09:01:00.046+00:00,192.168.56.10,192.168.56.20,SSH connection burst begins: 36 short sessions to port 22,conn.log uid=CsLr113uJrfHWq9o8g .. CEt7Tu3MaruhPrS1Qc
+2026-11-02T09:01:19.420+00:00,192.168.56.10,192.168.56.20,Last short SSH session,conn.log uid=CEt7Tu3MaruhPrS1Qc
+2026-11-02T09:01:22.420+00:00,192.168.56.10,192.168.56.20,"Long SSH session starts (duration 48.7 s, orig 4020 B, resp 25110 B)",conn.log uid=CNBPHlk56QfmtoJcc
+2026-11-02T09:02:11.105+00:00,192.168.56.20,192.168.56.10,Long SSH session ends,conn.log uid=CNBPHlk56QfmtoJcc

@@ -1,0 +1,26 @@
+sequenceDiagram
+    autonumber
+    participant V as Host 192.168.56.40
+    participant P as Primary C2 203.0.113.50:8443
+    participant B as Backup C2 203.0.113.51:8443
+    participant W as Benign 198.51.100.20:443
+    Note over V,P: 2026-11-04T14:00:00.000Z beacon 1, median 56.6 s (MAD 3.5 s), SNI updates.cdn-lab.test
+    loop beacons 1-19 (primary answered, 20 SF)
+        V->>P: TLS 1.2 handshake, ~578-594 B up
+        P-->>V: ~227 B down
+    end
+    Note over V,P: beacon 8 at 14:06:59.317Z: tasking-sized response 4219 B
+    P-->>V: 4219 B down
+    V->>P: 14:07:05.317Z (6 s later): 2302 B up (task result, inferred)
+    Note over V,P: beacons 20-21: primary silent (14:19:20.508Z, 14:20:15.456Z)
+    V-xP: SYN, SYN (+1 s), SYN (+3 s), no reply (S0, orig_pkts=3)
+    Note over V,B: beacons 22-45 move to 203.0.113.51 at 14:21:04.997Z, same SNI and byte pattern (T1008)
+    loop beacons 22-45 (24 SF, median interval 57.1 s, MAD 2.4 s)
+        V->>B: TLS 1.2 handshake, ~578-594 B up
+        B-->>V: ~227 B down
+    end
+    Note over V,B: beacon 33 at 14:31:37.763Z
+    V->>B: 86263 B upload (T1041, inferred as exfiltration)
+    B-->>V: 203 B
+    Note over V,W: 6 irregular HTTPS sessions, SNI www.example.test, ~100 KB median downloads (benign-looking)
+    V->>W: 14:01:00Z - 14:43:11Z
