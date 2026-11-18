@@ -1,6 +1,6 @@
 # Appendix B — Hash manifest
 
-Generated with `sha256sum` on 2026-11-18T21:26:34Z. Sealed pcaps and their `.sha256` files are read-only; analysis outputs are writable.
+Generated with `sha256sum` on 2026-11-18T21:30:32Z. Sealed pcaps and their `.sha256` files are read-only; analysis outputs are writable.
 
 **Scope:** every file in the submission tree is listed except this manifest itself (a file cannot hash itself), Python bytecode caches (`__pycache__/`, `*.pyc`) and Git internals under `.git/`. Root Markdown files, `.gitignore`, case artifacts, supplementary material, custody records, reports, PDFs and scripts are all included. Private exercise material (`project.md`, `lab/`, `ground_truth/`) is excluded from this public tree.
 
@@ -241,6 +241,7 @@ a845736f3348e0e7d94e32cb1b22e4c4ede6254cc5dedf3aa0406fccd6eb4fa7  cases/case04_c
 145066a6fc962acf9510005d7234818673795fcb2b4d58ba076c2ff1235a81dc  custody/README.md
 2669ecf2066279bc8525f6a1b43ecbb3be9f52718053d51659c51fe6473c68ad  custody/custody_log.csv
 6e4eb0cafb6fb4235aa6a34a1035ab2bab064943198ca8b4de10ef1548305d79  docs/BLIND_CHECK_TEMPLATE.md
+00f3edf9d3165a51e82aee4babc92f3c7323e5ea5fdf6432a102a1551360a2fe  docs/HUMAN_ONLY_HANDOVER.md
 f29080acd9be70fa85d46b48cb4318d00ffd37e9cf940be2fa172a3af669ad4e  docs/NEW_CASE_PIPELINE.md
 a94b7e0ac6aa38cfa02529c01f4750500bcd80b9998e9a12cc9db65ca1a93495  docs/PRESENTATION_CHART_CHECK.md
 6a3704dacc4e77c4307dd83eddb8a758a1a010eb9bc281d8ca09b7ff17c422eb  docs/TWO_HOST_CAPTURE_RUNBOOK.md
